@@ -13,7 +13,7 @@
 	var Logger = { };
 	
 	// For those that are at home that are keeping score.
-	Logger.VERSION = "0.9.0";
+	Logger.VERSION = "0.9.1";
 	
 	// Function which handles all incoming log messages.
 	var logHandler;
@@ -135,7 +135,7 @@
 	};		
 	
 	// Configure and example a Default implementation which writes to the `window.console` (if present).
-	Logger.useDefault = function(defaultLevel) {
+	Logger.useDefaults = function(defaultLevel) {
 		// Check for the presence of a logger.
 		if (!("console" in window)) {
 			return;
@@ -146,6 +146,11 @@
 			var console = window.console;
 			var hdlr = console.log;
 
+			// Prepend the logger's name to the log message for easy identification.
+			if (context.name) {
+				messages[0] = "[" + context.name + "] " + messages[0];
+			}
+			
 			// Delegate through to custom warn/error loggers if present on the console.
 			if (context.level === Logger.WARN && console.warn) {
 				hdlr = console.warn;

@@ -8,7 +8,7 @@ js-Logger has zero dependencies and comes with AMD and CommonJS module boilerpla
 	<script src="https://raw.github.com/jonnyreeves/js-logger/master/src/logger.min.js"></script>
 
 ## Usage
-Nothing beats the sheer extacy of logging!  js-Logger does its best to not be awkward and get in the way.  If you're the sort of person who just wants to get down and dirty then all you need is one line of code: 
+Nothing beats the sheer ecstasy of logging!  js-Logger does its best to not be awkward and get in the way.  If you're the sort of person who just wants to get down and dirty then all you need is one line of code: 
 
 	// Log messages will be written to the window's console.
 	Logger.useDefaults();
