@@ -1,5 +1,5 @@
 /*!
- * js-logger 0.9.0 - http://github.com/jonnyreeves/js-logger 
+ * js-logger - http://github.com/jonnyreeves/js-logger 
  * Jonny Reeves, http://jonnyreeves.co.uk/
  * js-logger may be freely distributed under the MIT license. 
  */
