@@ -1,4 +1,4 @@
-# js-Logger Lightweight, unobtrusive, configurable JavaScript logger.
+# Lightweight, unobtrusive, configurable JavaScript logger.
 
 [logger.js](https://github.com/jonnyreeves/js-logger/blob/master/src/logger.js) will make you rich, famous and want for almost nothing - oh and it's a flexible abstraction over using `console.log` as well.
 
@@ -52,3 +52,13 @@ Okay, let's get serious, logging is not for kids, it's for adults with serious s
 	
 	// As it's the same instance being returned each time, you don't have to store a reference:
 	Logger.get('ModuleA').warn('FizzWozz combombulated!");
+    
+Note that `Logger.setLevel()` will also change the current log filter level for all named logger instances; so typically you would configure your logger levels like so:
+
+    // Create a couple of named loggers (typically in their own AMD file)
+    var loggerA = Logger.get('LoggerA');
+    var loggerB = Logger.get('LoggerB');
+    
+    // Configure log levels.
+    Logger.setLevel(Logger.WARN);  // Global logging level.
+    Logger.get('LoggerB').setLevel(Logger.DEBUG);  // Enable debug logging for LoggerB

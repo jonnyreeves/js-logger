@@ -7,13 +7,13 @@
 /*jshint sub:true*/
 /*global window:true,define:true, module:true*/
 (function (window) {
-	"use strict";
+    "use strict";
 		
 	// Top level module for the global, static logger instance.
 	var Logger = { };
 	
 	// For those that are at home that are keeping score.
-	Logger.VERSION = "0.9.1";
+	Logger.VERSION = "0.9.2";
 	
 	// Function which handles all incoming log messages.
 	var logHandler;
@@ -108,7 +108,6 @@
 		// Shortcut for optimisers.
 		var L = Logger;
 		
-		L.setLevel = bind(globalLogger, globalLogger.setLevel);
 		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
 		L.debug = bind(globalLogger, globalLogger.debug);
 		L.info = bind(globalLogger, globalLogger.info);
@@ -125,7 +124,21 @@
 	Logger.setHandler = function (func) {
 		logHandler = func;
 	};
-	
+
+	// Sets the global logging filter level which applies to *all* previously registred, and future Logger instances.
+	// (note that named loggers (retrieved via `Logger.get`) can be configured indendently if required).
+	Logger.setLevel = function(level) {
+		// Set the globalLogger's level.
+		globalLogger.setLevel(level);
+		
+		// Apply this level to all registered contextual loggers.
+		for (var key in contextualLoggersByNameMap) {
+			if (contextualLoggersByNameMap.hasOwnProperty(key)) {
+				contextualLoggersByNameMap[key].setLevel(level);
+			}
+		}
+	};
+
 	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
 	// default context and log handler.
 	Logger.get = function (name) {

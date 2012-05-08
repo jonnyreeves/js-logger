@@ -118,3 +118,18 @@ test("Named logger.log convenience method", function () {
 	ok(this.calls.length === 1);
 	strictEqual(this.calls[0].context.level, Logger.INFO, "Logger.log message routed at INFO level");
 });
+
+test("Logger.setLevel - Modify log filter level of all named loggers", function () { 
+    var logger = this.logger;
+    var named = logger.get("NamedA");
+    
+    // No no log messages will be routed through this logger.
+    named.setLevel(logger.OFF);
+    
+    // Switch the global log level to DEBUG, should affect all named loggers
+    logger.setLevel(logger.DEBUG);
+    
+    named.debug("debug message");
+    
+    ok(this.calls.length === 1, "Logger.setLevel() sets log filter level for all named loggers");
+});
