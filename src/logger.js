@@ -169,6 +169,8 @@
 				hdlr = console.warn;
 			} else if (context.level === Logger.ERROR && console.error) {
 				hdlr = console.error;
+			} else if (context.level === Logger.INFO && console.info) {
+				hdlr = console.info;
 			}
 
 			hdlr.apply(console, messages);
