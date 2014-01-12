@@ -34,7 +34,7 @@ Log messages can get a bit annoying; you don't need to tell me, it's all cool.  
 ## Log Handler Functions
 All log messages are routed through a handler function which redirects filtered messages somewhere.  You can configure the handler function via `Logger.setHandler` nothing that the supplied function expects two arguments; the first being the log messages to output and the latter being a context object which can be inspected by the log handler.
 
-	Logger.setHandler(function (messages, context)) {
+	Logger.setHandler(function (messages, context) {
 		// Send messages to a custom logging endpoint for analysis.
 		// TODO: Add some security? (nah, you worry too much! :P)
 		jQuery.post('/logs', { message: messages[0], level: context.level });
