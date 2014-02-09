@@ -110,11 +110,11 @@
 		var L = Logger;
 		
 		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
-		L.debug = bind(globalLogger, globalLogger.debug);
-		L.info = bind(globalLogger, globalLogger.info);
-		L.warn = bind(globalLogger, globalLogger.warn);
-		L.error = bind(globalLogger, globalLogger.error);
-		
+		for (var i = methods.length - 1; i >= 0; i--) {
+			var method = methods[i];
+			L[method] = bind(globalLogger, globalLogger[method]);
+		};
+
 		// Don't forget the convenience alias!
 		L.log = L.info;
 	}());
