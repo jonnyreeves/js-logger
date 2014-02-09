@@ -15,9 +15,15 @@
 	// For those that are at home that are keeping score.
 	Logger.VERSION = "0.9.2";
 	
+	var methods = ["debug", "info", "warn", "error"];
+
+	var noop = function() {
+		// Do nothing.
+	};
+
 	// Function which handles all incoming log messages.
-	var logHandler;
-	
+	var logHandler = noop;
+
 	// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
 	var contextualLoggersByNameMap = {};
 	
@@ -63,10 +69,28 @@
 	
 	ContextualLogger.prototype = {		
 		// Changes the current logging level for the logging instance.
+		// Adds or modifies all of the methods (in the `methods` array) to either `noop` or the `logHandler`.
 		setLevel: function(newLevel) {
+
+			function createHandlerFunction(level, context) {
+				return function () {
+					logHandler(arguments, merge({ level: level }, context));
+				};
+			}
+
 			// Ensure the supplied Level object looks valid.
 			if (newLevel && "value" in newLevel) {
 				this.context.filterLevel = newLevel;
+
+				for (var i = methods.length - 1; i >= 0; i--) {
+					var method = methods[i];
+					var methodUpper = method.toUpperCase();
+					if (this.enabledFor(Logger[methodUpper])) {
+						this[method] = createHandlerFunction(Logger[methodUpper], this.context);
+					} else {
+						this[method] = noop;
+					}
+				}
 			}
 		},
 
@@ -74,29 +98,6 @@
 		enabledFor: function (lvl) {
 			var filterLevel = this.context.filterLevel;
 			return lvl.value >= filterLevel.value;
-		},
-		
-		debug: function () {
-			this.invoke(Logger.DEBUG, arguments);
-		},
-
-		info: function () {
-			this.invoke(Logger.INFO, arguments);
-		},
-		
-		warn: function () {
-			this.invoke(Logger.WARN, arguments);
-		},
-		
-		error: function () {
-			this.invoke(Logger.ERROR, arguments);
-		},
-		
-		// Invokes the logger callback if it's not being filtered.
-		invoke: function (level, msgArgs) {
-			if (logHandler && this.enabledFor(level)) {
-				logHandler(msgArgs, merge({ level: level }, this.context));
-			}
 		}
 	};	
 
