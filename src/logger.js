@@ -149,33 +149,33 @@
 	
 	// Configure and example a Default implementation which writes to the `window.console` (if present).
 	Logger.useDefaults = function(defaultLevel) {
-		// Check for the presence of a logger.
-		if (!("console" in window)) {
-			return;
-		}
+    // Check for the presence of a logger.
+    if (!("console" in window)) {
+      return;
+    }
 
-		Logger.setLevel(defaultLevel || Logger.DEBUG);
-		Logger.setHandler(function(messages, context) {
-			var console = window.console;
-			var hdlr = console.log;
+    Logger.setLevel(defaultLevel || Logger.DEBUG);
+    Logger.setHandler(function(messages, context) {
+      var console = window.console;
+      var hdlr = Function.prototype.bind.call(console.log, console);
 
-			// Prepend the logger's name to the log message for easy identification.
-			if (context.name) {
-				messages[0] = "[" + context.name + "] " + messages[0];
-			}
-			
-			// Delegate through to custom warn/error loggers if present on the console.
-			if (context.level === Logger.WARN && console.warn) {
-				hdlr = console.warn;
-			} else if (context.level === Logger.ERROR && console.error) {
-				hdlr = console.error;
-			} else if (context.level === Logger.INFO && console.info) {
-				hdlr = console.info;
-			}
+      // Prepend the logger's name to the log message for easy identification.
+      if (context.name) {
+        messages[0] = "[" + context.name + "] " + messages[0];
+      }
+      
+      // Delegate through to custom warn/error loggers if present on the console.
+      if (context.level === Logger.WARN && console.warn) {
+        hdlr = Function.prototype.bind.call(console.warn, console);
+      } else if (context.level === Logger.ERROR && console.error) {
+        hdlr = Function.prototype.bind.call(console.error, console);
+      } else if (context.level === Logger.INFO && console.info) {
+        hdlr = Function.prototype.bind.call(console.info, console);
+      }
 
-			hdlr.apply(console, messages);
-		});
-	};
+      hdlr.apply(console, messages);
+    });
+  };
 
 	
     // Export to popular environments boilerplate.
