@@ -1,13 +1,13 @@
 module("Logger", {
 	setup: function () {
-		this.calls = [];
-		
-		this.logFunc = function (messages, context) {
-			this.calls.push({ messages: messages, context: context });
-		};
-		
+		var calls = [];
+
+		this.calls = calls;
 		this.logger = window.Logger;
-		this.logger.setHandler(this.logFunc.bind(this));
+
+		this.logger.setHandler(function (messages, context) {
+			calls.push({ messages: messages, context: context });
+		});
 	}
 });
 

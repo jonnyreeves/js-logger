@@ -1,0 +1,16 @@
+{
+  "name": "js-logger",
+  "version": "0.9.4",
+  "description": "Lightweight, unobtrusive, configurable JavaScript logger",
+  "devDependencies": {
+    "gulp": "~3.5.2",
+    "gulp-util": "~2.2.14",
+    "gulp-uglify": "~0.2.1",
+    "gulp-replace": "~0.2.0",
+    "gulp-clean": "~0.2.4",
+    "gulp-rename": "~1.0.0",
+    "gulp-qunit": "~0.3.3",
+    "gulp-jshint": "~1.4.0",
+    "gulp-size": "~0.3.1"
+  }
+}
