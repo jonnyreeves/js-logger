@@ -19,30 +19,30 @@ gulp.task('clean', function () {
 gulp.task('build', [ 'clean' ], function () {
 	return gulp.src('src/logger.js')
 	 .pipe(replace(/@VERSION@/g, packageJSON.version))
-	 .pipe(rename(versionedName + '.js'))
 	 .pipe(gulp.dest('build'));
 });
 
 gulp.task('lint', [ 'build' ], function () {
 	return gulp.src('src/*.js')
-		.pipe(jshint())
-		.pipe(jshint.reporter('default'))
-		.pipe(jshint.reporter('fail'));
+	 .pipe(jshint())
+	 .pipe(jshint.reporter('default'))
+	 .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('test', function () {
 	return gulp.src('test-src/index.html')
-		.pipe(qunit());
+	 .pipe(qunit());
 });
 
 gulp.task('dist', [ 'build', 'lint', 'test' ], function ()
 {
-	return gulp.src('build/' + versionedName + '.js')
+	return gulp.src('build/logger.js')
 	 .pipe(gulp.dest('dist'))
-	 .pipe(size({ title: versionedName + '.js'}))
-	 .pipe(uglify())
+	 .pipe(rename(versionedName + '.js'))
 	 .pipe(size({ showFiles: true }))
+	 .pipe(uglify())
 	 .pipe(rename(versionedName + '.min.js'))
+	 .pipe(size({ showFiles: true }))
 	 .pipe(gulp.dest('dist'));
 });
 
