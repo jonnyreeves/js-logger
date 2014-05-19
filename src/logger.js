@@ -5,8 +5,8 @@
  */
 
 /*jshint sub:true*/
-/*global window:true,define:true, module:true*/
-(function (window) {
+/*global console:true,define:true, module:true*/
+(function (global) {
     "use strict";
 		
 	// Top level module for the global, static logger instance.
@@ -150,13 +150,13 @@
 	// Configure and example a Default implementation which writes to the `window.console` (if present).
 	Logger.useDefaults = function(defaultLevel) {
 		// Check for the presence of a logger.
-		if (!("console" in window)) {
+		if (!console) {
+			console.log("no console");
 			return;
 		}
 
 		Logger.setLevel(defaultLevel || Logger.DEBUG);
 		Logger.setHandler(function(messages, context) {
-			var console = window.console;
 			var hdlr = console.log;
 
 			// Prepend the logger's name to the log message for easy identification.
@@ -186,6 +186,13 @@
         module.exports = Logger;
     } 
     else {
-        window['Logger'] = Logger;
+		Logger._prevLogger = global.Logger;
+
+		Logger.noConflict = function () {
+			global.Logger = Logger._prevLogger;
+			return Logger;
+		};
+
+        global.Logger = Logger;
     }
-}(window));
+}(this));
