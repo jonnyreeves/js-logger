@@ -8,7 +8,7 @@
 /*global console:true,define:true, module:true*/
 (function (global) {
     "use strict";
-		
+
 	// Top level module for the global, static logger instance.
 	var Logger = { };
 	
@@ -27,7 +27,7 @@
 			return func.apply(scope, arguments);
 		};
 	};
-	
+
 	// Super exciting object merger-matron 9000 adding another 100 bytes to your download.
 	var merge = function () {
 		var args = arguments, target = args[0], key, i;
@@ -40,7 +40,7 @@
 		}
 		return target;
 	};
-	
+
 	// Helper to define a logging level object; helps with optimisation.
 	var defineLogLevel = function(value, name) {
 		return { value: value, name: name };
@@ -61,7 +61,7 @@
 		this.log = this.info;  // Convenience alias.
 	};
 	
-	ContextualLogger.prototype = {		
+	ContextualLogger.prototype = {
 		// Changes the current logging level for the logging instance.
 		setLevel: function(newLevel) {
 			// Ensure the supplied Level object looks valid.
@@ -87,7 +87,7 @@
 		warn: function () {
 			this.invoke(Logger.WARN, arguments);
 		},
-		
+
 		error: function () {
 			this.invoke(Logger.ERROR, arguments);
 		},
@@ -125,8 +125,8 @@
 		logHandler = func;
 	};
 
-	// Sets the global logging filter level which applies to *all* previously registred, and future Logger instances.
-	// (note that named loggers (retrieved via `Logger.get`) can be configured indendently if required).
+	// Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
+	// (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
 	Logger.setLevel = function(level) {
 		// Set the globalLogger's level.
 		globalLogger.setLevel(level);
@@ -177,15 +177,14 @@
 		});
 	};
 
-	
-    // Export to popular environments boilerplate.
-    if (typeof define === 'function' && define.amd) {
-        define(Logger);
-    } 
-    else if (typeof module !== 'undefined' && module.exports) {
-        module.exports = Logger;
-    } 
-    else {
+	// Export to popular environments boilerplate.
+	if (typeof define === 'function' && define.amd) {
+		define(Logger);
+	}
+	else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = Logger;
+	}
+	else {
 		Logger._prevLogger = global.Logger;
 
 		Logger.noConflict = function () {
@@ -193,6 +192,6 @@
 			return Logger;
 		};
 
-        global.Logger = Logger;
+		global.Logger = Logger;
     }
 }(this));
