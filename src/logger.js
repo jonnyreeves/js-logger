@@ -45,7 +45,7 @@
 	var defineLogLevel = function(value, name) {
 		return { value: value, name: name };
 	};
-	
+
 	// Predefined logging levels.
 	Logger.DEBUG = defineLogLevel(1, 'DEBUG');
 	Logger.INFO = defineLogLevel(2, 'INFO');
@@ -60,7 +60,7 @@
 		this.setLevel(defaultContext.filterLevel);
 		this.log = this.info;  // Convenience alias.
 	};
-	
+
 	ContextualLogger.prototype = {
 		// Changes the current logging level for the logging instance.
 		setLevel: function(newLevel) {
@@ -75,7 +75,7 @@
 			var filterLevel = this.context.filterLevel;
 			return lvl.value >= filterLevel.value;
 		},
-		
+
 		debug: function () {
 			this.invoke(Logger.DEBUG, arguments);
 		},
@@ -83,7 +83,7 @@
 		info: function () {
 			this.invoke(Logger.INFO, arguments);
 		},
-		
+
 		warn: function () {
 			this.invoke(Logger.WARN, arguments);
 		},
@@ -91,29 +91,29 @@
 		error: function () {
 			this.invoke(Logger.ERROR, arguments);
 		},
-		
+
 		// Invokes the logger callback if it's not being filtered.
 		invoke: function (level, msgArgs) {
 			if (logHandler && this.enabledFor(level)) {
 				logHandler(msgArgs, merge({ level: level }, this.context));
 			}
 		}
-	};	
+	};
 
 	// Protected instance which all calls to the to level `Logger` module will be routed through.
 	var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
-	
+
 	// Configure the global Logger instance.
-	(function() { 
+	(function() {
 		// Shortcut for optimisers.
 		var L = Logger;
-		
+
 		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
 		L.debug = bind(globalLogger, globalLogger.debug);
 		L.info = bind(globalLogger, globalLogger.info);
 		L.warn = bind(globalLogger, globalLogger.warn);
 		L.error = bind(globalLogger, globalLogger.error);
-		
+
 		// Don't forget the convenience alias!
 		L.log = L.info;
 	}());
@@ -130,7 +130,7 @@
 	Logger.setLevel = function(level) {
 		// Set the globalLogger's level.
 		globalLogger.setLevel(level);
-		
+
 		// Apply this level to all registered contextual loggers.
 		for (var key in contextualLoggersByNameMap) {
 			if (contextualLoggersByNameMap.hasOwnProperty(key)) {
@@ -143,10 +143,10 @@
 	// default context and log handler.
 	Logger.get = function (name) {
 		// All logger instances are cached so they can be configured ahead of use.
-		return contextualLoggersByNameMap[name] || 
+		return contextualLoggersByNameMap[name] ||
 			(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
-	};		
-	
+	};
+
 	// Configure and example a Default implementation which writes to the `window.console` (if present).
 	Logger.useDefaults = function(defaultLevel) {
 		// Check for the presence of a logger.
@@ -163,7 +163,7 @@
 			if (context.name) {
 				messages[0] = "[" + context.name + "] " + messages[0];
 			}
-			
+
 			// Delegate through to custom warn/error loggers if present on the console.
 			if (context.level === Logger.WARN && console.warn) {
 				hdlr = console.warn;
@@ -173,7 +173,8 @@
 				hdlr = console.info;
 			}
 
-			hdlr.apply(console, messages);
+			// Support for IE8+ (and other, slightly more sane environments)
+			Function.prototype.apply.call(hdlr, console, messages);
 		});
 	};
 
