@@ -151,7 +151,6 @@
 	Logger.useDefaults = function(defaultLevel) {
 		// Check for the presence of a logger.
 		if (!console) {
-			console.log("no console");
 			return;
 		}
 
