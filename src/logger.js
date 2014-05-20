@@ -173,7 +173,12 @@
 				hdlr = console.info;
 			}
 
-			hdlr.apply(console, messages);
+			try {
+				hdlr.apply(console, messages);
+			} catch(e) {
+				// IE 8 console methods do not inherit from Function, and thus do not possess .apply() or .call()
+				Function.prototype.call.apply(hdlr, messages);
+			}
 		});
 	};
 
