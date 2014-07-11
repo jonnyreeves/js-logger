@@ -7,13 +7,13 @@
 /*jshint sub:true*/
 /*global console:true,define:true, module:true*/
 (function (global) {
-    "use strict";
+	"use strict";
 
 	// Top level module for the global, static logger instance.
 	var Logger = { };
 	
 	// For those that are at home that are keeping score.
-	Logger.VERSION = "@VERSION@";
+	Logger.VERSION = "0.9.7";
 	
 	// Function which handles all incoming log messages.
 	var logHandler;
@@ -63,7 +63,7 @@
 
 	ContextualLogger.prototype = {
 		// Changes the current logging level for the logging instance.
-		setLevel: function(newLevel) {
+		setLevel: function (newLevel) {
 			// Ensure the supplied Level object looks valid.
 			if (newLevel && "value" in newLevel) {
 				this.context.filterLevel = newLevel;

@@ -1,6 +1,6 @@
 {
   "name": "js-logger",
-  "version": "0.9.2",
+  "version": "0.9.7",
   "main": "src/logger.js",
   "ignore": [
     "**/.*",

@@ -1,3 +1,11 @@
+## 0.9.7 (11th July, 2014)
+
+Bugfixes:
+	- Bower version updated.
+	- Whitespace issue (spaces instead of tabs).
+	- Dropped the notion of a `dist` folder, just giving in and checking the versioned release files into
+		source control as it strikes me that's the "bower way"(tm).
+
 ## 0.9.6 (20th May, 2014)
 
 Bugfixes:

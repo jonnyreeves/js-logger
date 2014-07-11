@@ -3,47 +3,55 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var replace = require('gulp-replace');
-var clean = require('gulp-clean');
 var rename = require('gulp-rename');
 var qunit = require('gulp-qunit');
 var jshint = require('gulp-jshint');
 var size = require('gulp-size');
+var git = require('gulp-git');
 
-var versionedName = 'logger-' + packageJSON.version;
+var version = packageJSON.version;
+var srcFile = 'src/logger.js';
 
-gulp.task('clean', function () {
-	gulp.src('dist', { read: false }).pipe(clean());
-	gulp.src('build', { read: false }).pipe(clean());
+gulp.task('src_version', function () {
+	return gulp.src(srcFile)
+		.pipe(replace(/VERSION = "[^"]+"/, 'VERSION = "' + version + '"'))
+		.pipe(gulp.dest('src'));
 });
 
-gulp.task('build', [ 'clean' ], function () {
-	return gulp.src('src/logger.js')
-	 .pipe(replace(/@VERSION@/g, packageJSON.version))
-	 .pipe(gulp.dest('build'));
+gulp.task('bower_version', function () {
+	return gulp.src('bower.json')
+		.pipe(replace(/version": "[^"]+"/, 'version": "' + version + '"'))
+		.pipe(gulp.dest('.'));
 });
 
-gulp.task('lint', [ 'build' ], function () {
-	return gulp.src('src/*.js')
-	 .pipe(jshint())
-	 .pipe(jshint.reporter('default'))
-	 .pipe(jshint.reporter('fail'));
+gulp.task('version', [ 'src_version', 'bower_version' ]);
+
+gulp.task('lint', [ 'version' ], function () {
+	return gulp.src(srcFile)
+		.pipe(jshint())
+		.pipe(jshint.reporter('default'))
+		.pipe(jshint.reporter('fail'));
 });
 
-gulp.task('test', function () {
+gulp.task('test', [ 'version' ], function () {
 	return gulp.src('test-src/index.html')
-	 .pipe(qunit());
+		.pipe(qunit());
 });
 
-gulp.task('dist', [ 'build', 'lint', 'test' ], function ()
-{
-	return gulp.src('build/logger.js')
-	 .pipe(gulp.dest('dist'))
-	 .pipe(rename(versionedName + '.js'))
-	 .pipe(size({ showFiles: true }))
-	 .pipe(uglify())
-	 .pipe(rename(versionedName + '.min.js'))
-	 .pipe(size({ showFiles: true }))
-	 .pipe(gulp.dest('dist'));
+gulp.task('minify', [ 'version' ], function () {
+	return gulp.src(srcFile)
+		.pipe(size({ showFiles: true }))
+		.pipe(uglify())
+		.pipe(rename('logger.min.js'))
+		.pipe(size({ showFiles: true }))
+		.pipe(gulp.dest('src'));
 });
 
-gulp.task('default', [ 'dist' ]);
+gulp.task('release', function () {
+	var tagMsg = 'v' + version;
+
+	git.tag(version, tagMsg);
+	console.log('creating git tag', tagMsg);
+});
+
+gulp.task('default', [ 'version', 'lint', 'test', 'minify' ]);
