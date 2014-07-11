@@ -1,3 +1,8 @@
+## 0.9.8 (11th July, 2014)
+
+Bugfixes:
+	- Added missing minified file.
+
 ## 0.9.7 (11th July, 2014)
 
 Bugfixes:
