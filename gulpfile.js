@@ -8,7 +8,8 @@ var qunit = require('gulp-qunit');
 var jshint = require('gulp-jshint');
 var size = require('gulp-size');
 var git = require('gulp-git');
-
+var spawn = require('child_process').spawn;
+ 
 var version = packageJSON.version;
 var srcFile = 'src/logger.js';
 
@@ -47,11 +48,14 @@ gulp.task('minify', [ 'version' ], function () {
 		.pipe(gulp.dest('src'));
 });
 
-gulp.task('release', function () {
+gulp.task('release', function (done) {
 	var tagMsg = 'v' + version;
 
 	git.tag(version, tagMsg);
 	console.log('creating git tag', tagMsg);
+
+	spawn('npm', [ 'publish' ], { stdio: 'inherit' })
+		.on('close', done);
 });
 
 gulp.task('default', [ 'version', 'lint', 'test', 'minify' ]);

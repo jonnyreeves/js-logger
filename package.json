@@ -17,7 +17,7 @@
       "url": "http://github.com/jonnyreeves/js-logger/blob/master/MIT-LICENSE.txt"
     }
   ],
-  "main": "build/logger.js",
+  "main": "src/logger.js",
   "devDependencies": {
     "gulp": "~3.5.2",
     "gulp-util": "~2.2.14",
