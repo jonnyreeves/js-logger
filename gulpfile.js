@@ -50,13 +50,11 @@ gulp.task('minify', [ 'version' ], function () {
 
 gulp.task('release', [ 'push_tag', 'publish_npm' ]);
 
-gulp.task('push_tag', function () {
-	return gulp.src('./')
-		.pipe(git.tag(version, 'v' + version))
-		.pipe(
-			git.push('origin', 'master', { args: ' --tags' })
-				.end()
-		)
+gulp.task('push_tag', function (done) {
+	git.tag(version, 'v' + version);
+
+	git.push('origin', 'master', { args: ' --tags' }, done)
+		.end();
 });
 
 gulp.task('publish_npm', function (done) {

@@ -1,3 +1,6 @@
+## 0.9.12 (13th July, 2014)
+	- Fixed `release` task to correctly push tags to origin.
+
 ## 0.9.11 (11th July, 2014)
 	- Twiddling with the build and packaging process.
 	- Added npm test script (`npm test`).
