@@ -53,8 +53,8 @@ gulp.task('release', [ 'push_tag', 'publish_npm' ]);
 gulp.task('push_tag', function (done) {
 	git.tag(version, 'v' + version);
 
-	git.push('origin', 'master', { args: ' --tags' }, done)
-		.end();
+	spawn('git', [ 'push', '--tags' ], { stdio: 'inherit' })
+		.on('close', done);
 });
 
 gulp.task('publish_npm', function (done) {
