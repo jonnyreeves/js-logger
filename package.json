@@ -1,6 +1,6 @@
 {
   "name": "js-logger",
-  "version": "0.9.10",
+  "version": "0.9.11",
   "description": "Lightweight, unobtrusive, configurable JavaScript logger",
   "author": "Jonny Reeves (http://jonnyreeves.co.uk)",
   "homepage": "http://github.com/jonnyreeves/js-logger",
@@ -18,6 +18,9 @@
     }
   ],
   "main": "src/logger.js",
+  "scripts": {
+    "test": "gulp test lint"
+  },
   "devDependencies": {
     "gulp": "~3.5.2",
     "gulp-util": "~2.2.14",

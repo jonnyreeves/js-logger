@@ -48,12 +48,18 @@ gulp.task('minify', [ 'version' ], function () {
 		.pipe(gulp.dest('src'));
 });
 
-gulp.task('release', function (done) {
-	var tagMsg = 'v' + version;
+gulp.task('release', [ 'push_tag', 'publish_npm' ]);
 
-	git.tag(version, tagMsg);
-	console.log('creating git tag', tagMsg);
+gulp.task('push_tag', function () {
+	return gulp.src('./')
+		.pipe(git.tag(version, 'v' + version))
+		.pipe(
+			git.push('origin', 'master', { args: ' --tags' })
+				.end()
+		)
+});
 
+gulp.task('publish_npm', function (done) {
 	spawn('npm', [ 'publish' ], { stdio: 'inherit' })
 		.on('close', done);
 });

@@ -1,3 +1,7 @@
+## 0.9.11 (11th July, 2014)
+	- Twiddling with the build and packaging process.
+	- Added npm test script (`npm test`).
+
 ## 0.9.8 (11th July, 2014)
 
 Bugfixes:
