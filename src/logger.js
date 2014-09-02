@@ -150,7 +150,7 @@
 	// Configure and example a Default implementation which writes to the `window.console` (if present).
 	Logger.useDefaults = function(defaultLevel) {
 		// Check for the presence of a logger.
-		if (!console) {
+		if (typeof console === "undefined") {
 			return;
 		}
 

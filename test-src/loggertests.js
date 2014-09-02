@@ -133,3 +133,26 @@ test("Logger.setLevel - Modify log filter level of all named loggers", function 
     
     ok(this.calls.length === 1, "Logger.setLevel() sets log filter level for all named loggers");
 });
+
+test("Logger.useDefaults logs to console", function () {
+    var logger = this.logger;
+
+    var sandbox = sinon.sandbox.create();
+    sandbox.stub(console, "log");
+    sandbox.stub(console, "info");
+    sandbox.stub(console, "warn");
+    sandbox.stub(console, "error");
+
+    logger.useDefaults();
+    logger.debug("debug message");
+    logger.info("info message");
+    logger.warn("warning message");
+    logger.error("error message");
+
+    ok(console.log.calledOnce, "logger.debug calls console.log");
+    ok(console.info.calledOnce, "logger.info calls console.info");
+    ok(console.warn.calledOnce, "logger.warn calls console.warn");
+    ok(console.error.calledOnce, "logger.error calls console.error");
+
+    sandbox.restore();
+});
