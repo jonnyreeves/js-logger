@@ -1,3 +1,6 @@
+## 0.9.14 (4th September, 2014)
+	- Fix for IE7 (#10, @james-west)
+
 ## 0.9.12 (13th July, 2014)
 	- Fixed `release` task to correctly push tags to origin.
 
