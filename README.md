@@ -1,4 +1,6 @@
-# Lightweight, unobtrusive, configurable JavaScript logger.
+# js-Logger [![Build Status](https://travis-ci.org/jonnyreeves/js-logger.svg?branch=master)](https://travis-ci.org/jonnyreeves/js-logger)
+
+> Lightweight, unobtrusive, configurable JavaScript logger.
 
 [logger.js](https://github.com/jonnyreeves/js-logger/blob/master/src/logger.js) will make you rich, famous and want for almost nothing - oh and it's a flexible abstraction over using `console.log` as well.
 
