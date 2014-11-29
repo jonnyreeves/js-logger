@@ -1,4 +1,4 @@
-# js-Logger [![Build Status](https://travis-ci.org/jonnyreeves/js-logger.svg?branch=master)](https://travis-ci.org/jonnyreeves/js-logger)
+# js-Logger [![Build Status](https://travis-ci.org/jonnyreeves/js-logger.svg?branch=master)](https://travis-ci.org/jonnyreeves/js-logger) [![npm version](https://badge.fury.io/js/js-logger.svg)](http://badge.fury.io/js/js-logger) ![npm dependencies](https://david-dm.org/jonnyreeves/js-logger.png)
 
 > Lightweight, unobtrusive, configurable JavaScript logger.
 
