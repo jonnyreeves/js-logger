@@ -15,8 +15,8 @@
 	// For those that are at home that are keeping score.
 	Logger.VERSION = "0.9.14";
 	
-	// Function which handles all incoming log messages.
-	var logHandler;
+	// Functions which handles all incoming log messages.
+	var logHandler = [];
 	
 	// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
 	var contextualLoggersByNameMap = {};
@@ -92,10 +92,17 @@
 			this.invoke(Logger.ERROR, arguments);
 		},
 
-		// Invokes the logger callback if it's not being filtered.
+        // Interate over all handlers
+        iterateHandler: function () {
+            for (var i = 0; i< logHandler.length; i++) {
+                logHandler[i].apply(this, Array.prototype.slice.call(arguments));
+            }
+        },
+
+		// Invokes the loggers callbacks if it's not being filtered.
 		invoke: function (level, msgArgs) {
-			if (logHandler && this.enabledFor(level)) {
-				logHandler(msgArgs, merge({ level: level }, this.context));
+			if (logHandler.length > 0 && this.enabledFor(level)) {
+                this.iterateHandler(msgArgs, merge({level: level}, this.context));
 			}
 		}
 	};
@@ -122,7 +129,15 @@
 	// object with the supplied log messages and the second being a context object which contains a hash of stateful
 	// parameters which the logging function can consume.
 	Logger.setHandler = function (func) {
-		logHandler = func;
+        logHandler = [];
+		logHandler.push(func);
+	};
+    
+    // Adding additional logging handler. The supplied function should expect two arguments, the first being an arguments
+	// object with the supplied log messages and the second being a context object which contains a hash of stateful
+	// parameters which the logging function can consume.
+	Logger.addHandler = function (func) {
+		logHandler.push(func);
 	};
 
 	// Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.

@@ -42,6 +42,14 @@ All log messages are routed through a handler function which redirects filtered 
 		jQuery.post('/logs', { message: messages[0], level: context.level });
 	}); 
 
+### Additional loggers
+  It is also possible to add additional logger to existing ones. So logs can be send to console, to a remote logger or whatever.
+
+    Logger.addHandler(function (messages, context) {
+		// Implementing your own logger besides console or jQuery.post
+	}); 
+
+
 ## Named Loggers
 Okay, let's get serious, logging is not for kids, it's for adults with serious software to write and mission critical log messages to trawl through.  To help you in your goal, js-Logger provides 'named' loggers which can be configured individual with their own contexts.
 
