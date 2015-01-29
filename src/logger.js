@@ -23,22 +23,32 @@
 	
 	// Polyfill for ES5's Function.bind.
 	var bind = function(scope, func) {
-		return function() {
-			return func.apply(scope, arguments);
-		};
+	    return function() {
+	        return func.apply(scope, arguments);
+	    };
 	};
 
-	// Super exciting object merger-matron 9000 adding another 100 bytes to your download.
-	var merge = function () {
-		var args = arguments, target = args[0], key, i;
-		for (i = 1; i < args.length; i++) {
-			for (key in args[i]) {
-				if (!(key in target) && args[i].hasOwnProperty(key)) {
-					target[key] = args[i][key];
-				}
-			}
-		}
-		return target;
+	var merge = function() {
+	    var args = arguments,
+	        target = args[0],
+	        key, i;
+	    for (i = 1; i < args.length; i++) {
+
+	        // add support for late binding functions
+	        // usecase: logger.log( expensiveFunction.bind(x, y, z) )
+	        var argument = args[i];
+	        var argumentValue = argument;
+	        if (typeof argument === 'function') {
+	            argumentValue = argument();
+	        };
+
+	        for (key in argumentValue) {
+	            if (!(key in target) && args[i].hasOwnProperty(key)) {
+	                target[key] = args[i][key];
+	            }
+	        }
+	    }
+	    return target;
 	};
 
 	// Helper to define a logging level object; helps with optimisation.
