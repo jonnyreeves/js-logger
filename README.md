@@ -22,6 +22,14 @@ Now, when you want to emit a red-hot log message, just drop one of the following
 	Logger.warn("Purple Alert! Purple Alert!");
 	Logger.error("HOLY SHI... no carrier.");
 
+Expensive functions could be evaluated conditionally later for performance increase:
+
+	Logger.debug( JSON.stringify.bind(null, someThingBigAndDeeplyNested) );
+	Logger.info( $().html.bind( $('#biggestDivOnEarth') ) );
+	Logger.warn( someAjaxSvc.func.bind(null, arg1, arg2, arg3) );
+	Logger.error( setTimeout.bind(null, calculateTheUniverseAge ));
+
+
 Log messages can get a bit annoying; you don't need to tell me, it's all cool.  If things are getting too noisy for your liking then it's time you read up on the `Logger.setLevel` method:
 
 	// Only log WARN and ERROR messages.
