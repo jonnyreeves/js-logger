@@ -40,36 +40,58 @@
 		assert.strictEqual(this.calls[3].context.level, logger.ERROR);
 	});
 
+	QUnit.test('Golobal Logger - Timing operations routed to logger function', function (assert) {
+		var logger = this.logger;
+
+		// Enable all log messages.
+		logger.setLevel(logger.DEBUG);
+
+		logger.time('label');
+		assert.strictEqual(this.calls[0].context.level, logger.TIME);
+		assert.strictEqual(this.calls[0].messages[0], 'label');
+		assert.strictEqual(this.calls[0].messages[1], 'start');
+
+		logger.timeEnd('label');
+		assert.strictEqual(this.calls[1].context.level, logger.TIME);
+		assert.strictEqual(this.calls[1].messages[0], 'label');
+		assert.strictEqual(this.calls[1].messages[1], 'end');
+	});
+
 	QUnit.test("Global Logger.enabledFor", function (assert) {
 		var logger = this.logger;
 
 		logger.setLevel(logger.OFF);
 		assert.equal(logger.enabledFor(logger.DEBUG), false);
 		assert.equal(logger.enabledFor(logger.INFO), false);
+		assert.equal(logger.enabledFor(logger.TIME), false);
 		assert.equal(logger.enabledFor(logger.WARN), false);
 		assert.equal(logger.enabledFor(logger.ERROR), false);
 
 		logger.setLevel(logger.DEBUG);
 		assert.equal(logger.enabledFor(logger.DEBUG), true);
 		assert.equal(logger.enabledFor(logger.INFO), true);
+		assert.equal(logger.enabledFor(logger.TIME), true);
 		assert.equal(logger.enabledFor(logger.WARN), true);
 		assert.equal(logger.enabledFor(logger.ERROR), true);
 
 		logger.setLevel(logger.INFO);
 		assert.equal(logger.enabledFor(logger.DEBUG), false);
 		assert.equal(logger.enabledFor(logger.INFO), true);
+		assert.equal(logger.enabledFor(logger.TIME), true);
 		assert.equal(logger.enabledFor(logger.WARN), true);
 		assert.equal(logger.enabledFor(logger.ERROR), true);
 
 		logger.setLevel(logger.WARN);
 		assert.equal(logger.enabledFor(logger.DEBUG), false);
 		assert.equal(logger.enabledFor(logger.INFO), false);
+		assert.equal(logger.enabledFor(logger.TIME), false);
 		assert.equal(logger.enabledFor(logger.WARN), true);
 		assert.equal(logger.enabledFor(logger.ERROR), true);
 
 		logger.setLevel(logger.ERROR);
 		assert.equal(logger.enabledFor(logger.DEBUG), false);
 		assert.equal(logger.enabledFor(logger.INFO), false);
+		assert.equal(logger.enabledFor(logger.TIME), false);
 		assert.equal(logger.enabledFor(logger.WARN), false);
 		assert.equal(logger.enabledFor(logger.ERROR), true);
 	});
@@ -156,6 +178,23 @@
 		assert.ok(console.info.calledOnce, "logger.info calls console.info");
 		assert.ok(console.warn.calledOnce, "logger.warn calls console.warn");
 		assert.ok(console.error.calledOnce, "logger.error calls console.error");
+
+		sandbox.restore();
+	});
+
+	QUnit.test('Logger.useDefaults forward timing operations through to the console', function (assert) {
+		var logger = this.logger;
+
+		var sandbox = sinon.sandbox.create();
+		sandbox.stub(console, "time");
+		sandbox.stub(console, "timeEnd");
+
+		logger.useDefaults();
+		logger.time("label");
+		logger.timeEnd("label");
+
+		assert.ok(console.time.calledOnce, "logger.time calls console.time");
+		assert.ok(console.timeEnd.calledOnce, "logger.timeEnd calls console.timeEnd");
 
 		sandbox.restore();
 	});
