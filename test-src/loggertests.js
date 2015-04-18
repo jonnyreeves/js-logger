@@ -119,40 +119,40 @@ test("Named logger.log convenience method", function () {
 	strictEqual(this.calls[0].context.level, Logger.INFO, "Logger.log message routed at INFO level");
 });
 
-test("Logger.setLevel - Modify log filter level of all named loggers", function () { 
-    var logger = this.logger;
-    var named = logger.get("NamedA");
-    
-    // No no log messages will be routed through this logger.
-    named.setLevel(logger.OFF);
-    
-    // Switch the global log level to DEBUG, should affect all named loggers
-    logger.setLevel(logger.DEBUG);
-    
-    named.debug("debug message");
-    
-    ok(this.calls.length === 1, "Logger.setLevel() sets log filter level for all named loggers");
+test("Logger.setLevel - Modify log filter level of all named loggers", function () {
+	var logger = this.logger;
+	var named = logger.get("NamedA");
+
+	// No no log messages will be routed through this logger.
+	named.setLevel(logger.OFF);
+
+	// Switch the global log level to DEBUG, should affect all named loggers
+	logger.setLevel(logger.DEBUG);
+
+	named.debug("debug message");
+
+	ok(this.calls.length === 1, "Logger.setLevel() sets log filter level for all named loggers");
 });
 
 test("Logger.useDefaults logs to console", function () {
-    var logger = this.logger;
+	var logger = this.logger;
 
-    var sandbox = sinon.sandbox.create();
-    sandbox.stub(console, "log");
-    sandbox.stub(console, "info");
-    sandbox.stub(console, "warn");
-    sandbox.stub(console, "error");
+	var sandbox = sinon.sandbox.create();
+	sandbox.stub(console, "log");
+	sandbox.stub(console, "info");
+	sandbox.stub(console, "warn");
+	sandbox.stub(console, "error");
 
-    logger.useDefaults();
-    logger.debug("debug message");
-    logger.info("info message");
-    logger.warn("warning message");
-    logger.error("error message");
+	logger.useDefaults();
+	logger.debug("debug message");
+	logger.info("info message");
+	logger.warn("warning message");
+	logger.error("error message");
 
-    ok(console.log.calledOnce, "logger.debug calls console.log");
-    ok(console.info.calledOnce, "logger.info calls console.info");
-    ok(console.warn.calledOnce, "logger.warn calls console.warn");
-    ok(console.error.calledOnce, "logger.error calls console.error");
+	ok(console.log.calledOnce, "logger.debug calls console.log");
+	ok(console.info.calledOnce, "logger.info calls console.info");
+	ok(console.warn.calledOnce, "logger.warn calls console.warn");
+	ok(console.error.calledOnce, "logger.error calls console.error");
 
-    sandbox.restore();
+	sandbox.restore();
 });

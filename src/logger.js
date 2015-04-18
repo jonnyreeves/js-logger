@@ -193,5 +193,5 @@
 		};
 
 		global.Logger = Logger;
-    }
+	}
 }(this));
