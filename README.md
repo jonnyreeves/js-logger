@@ -57,7 +57,7 @@ Okay, let's get serious, logging is not for kids, it's for adults with serious s
 
 Note that `Logger.setLevel()` will also change the current log filter level for all named logger instances; so typically you would configure your logger levels like so:
 
-	// Create a couple of named loggers (typically in their own AMD file)
+	// Create a couple of named loggers (typically in their own module)
 	var loggerA = Logger.get('LoggerA');
 	var loggerB = Logger.get('LoggerB');
 
