@@ -27,7 +27,7 @@ gulp.task('bower_version', function () {
 gulp.task('version', [ 'src_version', 'bower_version' ]);
 
 gulp.task('lint', [ 'version' ], function () {
-	return gulp.src(srcFile)
+	return gulp.src([ srcFile, 'test-src/*.js' ])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
 		.pipe(jshint.reporter('fail'));

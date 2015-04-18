@@ -1,0 +1,8 @@
+{
+  "extends": "../.jshintrc",
+  "globals": {
+    "Logger": true,
+    "QUnit": true,
+    "sinon": true
+  }
+}

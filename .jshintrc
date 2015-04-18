@@ -1,0 +1,12 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "undef": true,
+  "browser": true,
+  "strict": true,
+  "globals": {
+    "console": true,
+    "define": true,
+    "module": true
+  }
+}

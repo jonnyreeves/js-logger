@@ -3,9 +3,6 @@
  * Jonny Reeves, http://jonnyreeves.co.uk/
  * js-logger may be freely distributed under the MIT license. 
  */
-
-/*jshint sub:true*/
-/*global console:true,define:true, module:true*/
 (function (global) {
 	"use strict";
 
