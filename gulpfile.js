@@ -1,6 +1,5 @@
 var packageJSON = require('./package.json');
 var gulp = require('gulp');
-var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
