@@ -55,6 +55,7 @@
                         setJetPref(extLogLevel, newLevel.name);
                         if (global) {
                             setJetPref(globalExtLogLevel, newLevel.name);
+                            Logger.setLevel(newLevel);
                         }
                     }
                 }
@@ -181,10 +182,9 @@
 
     // Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
     // (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
-    Logger.setLevel = function (level, global) {
+    Logger.setLevel = function (level) {
         // Set the globalLogger's level.
         globalLogger.setLevel(level);
-        if (isJetpack) Logger.jetpack.setLevel(level, global);
 
         // Apply this level to all registered contextual loggers.
         for (var key in contextualLoggersByNameMap) {
