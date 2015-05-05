@@ -17,6 +17,7 @@ Nothing beats the sheer ecstasy of logging!  js-Logger does its best to not be a
 
 Now, when you want to emit a red-hot log message, just drop one of the following (the syntax is identical to the `console` object)
 
+	Logger.log("That's one small step for man...")
 	Logger.debug("I'm a debug message!");
 	Logger.info("OMG! Check this window out!", window);
 	Logger.warn("Purple Alert! Purple Alert!");
@@ -32,6 +33,14 @@ Log messages can get a bit annoying; you don't need to tell me, it's all cool.  
 	// Ah, you know what, I'm sick of all these messages.
 	Logger.setLevel(Logger.OFF);
 	Logger.error("Hull breach on decks 5 through to 41!");  // ...
+
+## Mozilla's Add-on SDK
+Everything works the same(almost), you may need to define the loglevel for your extension or globally.
+
+	// Set the loglevel for your add-on. <--This won't change the Logger or context log levels.
+	Logger.jetpack.setLevel(Logger.ALL);
+	// Debugging? Set the **global** loglevel instead and your done.
+	Logger.jetpack.setLevel(Logger.DEBUG, true);
 
 ## Log Handler Functions
 All log messages are routed through a handler function which redirects filtered messages somewhere.  You can configure the handler function via `Logger.setHandler` nothing that the supplied function expects two arguments; the first being the log messages to output and the latter being a context object which can be inspected by the log handler.
