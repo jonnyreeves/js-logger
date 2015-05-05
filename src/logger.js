@@ -5,7 +5,7 @@
  */
 
 /*jshint sub:true*/
-/*global console:true,define:true, module:true*/
+/*global console:true,define:true,module:true,Components:true,XPCNativeWrapper:true,require:true*/
 (function (global) {
 	"use strict";
 
@@ -13,7 +13,43 @@
 	var Logger = { };
 	
 	// For those that are at home that are keeping score.
-	Logger.VERSION = "0.9.14";
+    Logger.VERSION = "0.9.15";
+
+    // Detect Mozilla's Add-on SDK environment
+    var isJetpack = (function (strict) {
+        try {
+            void( Components );
+        } catch (error) {
+            //noinspection JSUnresolvedVariable
+            if (error.fileName === 'resource://gre/modules/commonjs/toolkit/loader.js')
+                return true;
+        }
+
+        var jetEnv = (typeof(XPCNativeWrapper) !== 'undefined' && typeof(require) !== 'undefined');
+        if (jetEnv) {
+            if (!strict)
+                return true;
+            else {
+                try {
+                    //noinspection JSUnresolvedVariable
+                    return require('sdk/system').vendor === 'Mozilla';
+                }
+                catch (error) {
+                    return false;
+                }
+            }
+        }
+        return false;
+    })(false);
+
+    // Setup support for the SDK env
+    if (isJetpack) {
+        var jetId = require('sdk/self').id;
+        Logger.jetpack = {
+            logLevel: 'extensions.' + jetId + '.sdk.console.loglevel',
+            set: require('sdk/preferences/service').set
+        };
+    }
 	
 	// Function which handles all incoming log messages.
 	var logHandler;
@@ -47,11 +83,11 @@
 	};
 
 	// Predefined logging levels.
-	Logger.DEBUG = defineLogLevel(1, 'DEBUG');
-	Logger.INFO = defineLogLevel(2, 'INFO');
-	Logger.WARN = defineLogLevel(4, 'WARN');
-	Logger.ERROR = defineLogLevel(8, 'ERROR');
-	Logger.OFF = defineLogLevel(99, 'OFF');
+    Logger.DEBUG = defineLogLevel(1, 'debug');
+    Logger.INFO = defineLogLevel(2, 'info');
+    Logger.WARN = defineLogLevel(4, 'warn');
+    Logger.ERROR = defineLogLevel(8, 'error');
+    Logger.OFF = defineLogLevel(99, 'off');
 
 	// Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
 	// of each other.
@@ -61,14 +97,22 @@
 		this.log = this.info;  // Convenience alias.
 	};
 
+    // ContextualLogger.prototype method, moved here for optimization
+    var setLevel = function (newLevel) {
+        // Ensure the supplied Level object looks valid.
+        if (newLevel && "value" in newLevel) {
+            this.context.filterLevel = newLevel;
+        }
+    };
+
 	ContextualLogger.prototype = {
 		// Changes the current logging level for the logging instance.
-		setLevel: function (newLevel) {
-			// Ensure the supplied Level object looks valid.
-			if (newLevel && "value" in newLevel) {
-				this.context.filterLevel = newLevel;
-			}
-		},
+        setLevel: isJetpack ? function (newLevel) {
+            if (newLevel && "value" in newLevel) {
+                Logger.jetpack.set(Logger.jetpack.logLevel, newLevel.value);
+                this.context.filterLevel = newLevel;
+            }
+        } : setLevel,
 
 		// Is the logger configured to output messages at the supplied level?
 		enabledFor: function (lvl) {
