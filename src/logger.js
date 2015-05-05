@@ -49,9 +49,13 @@
                 var jetId = require('sdk/self').id;
                 var setJetPref = require('sdk/preferences/service').set;
                 var extLogLevel = 'extensions.' + jetId + '.sdk.console.loglevel';
-                return function (newLevel) {
+                var globalExtLogLevel = 'extensions.sdk.console.logLevel';
+                return function (newLevel, global) {
                     if (newLevel && "value" in newLevel) {
                         setJetPref(extLogLevel, newLevel.name);
+                        if (global) {
+                            setJetPref(globalExtLogLevel, newLevel.name);
+                        }
                     }
                 }
             })()
@@ -96,7 +100,6 @@
     Logger.INFO = defineLogLevel(4, 'info');
     Logger.WARN = defineLogLevel(5, 'warn');
     Logger.ERROR = defineLogLevel(8, 'error');
-    Logger.EXCEPTION = defineLogLevel(8, 'error');
     Logger.OFF = defineLogLevel(99, 'off');
 
     // Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
@@ -178,10 +181,10 @@
 
     // Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
     // (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
-    Logger.setLevel = function (level) {
+    Logger.setLevel = function (level, global) {
         // Set the globalLogger's level.
         globalLogger.setLevel(level);
-        if (isJetpack) Logger.jetpack.setLevel(level);
+        if (isJetpack) Logger.jetpack.setLevel(level, global);
 
         // Apply this level to all registered contextual loggers.
         for (var key in contextualLoggersByNameMap) {
