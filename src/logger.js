@@ -109,7 +109,7 @@
 		// Changes the current logging level for the logging instance.
         setLevel: isJetpack ? function (newLevel) {
             if (newLevel && "value" in newLevel) {
-                Logger.jetpack.set(Logger.jetpack.logLevel, newLevel.value);
+                Logger.jetpack.set(Logger.jetpack.logLevel, newLevel.name);
                 this.context.filterLevel = newLevel;
             }
         } : setLevel,
@@ -214,7 +214,9 @@
 				hdlr = console.error;
 			} else if (context.level === Logger.INFO && console.info) {
 				hdlr = console.info;
-			}
+            } else if (context.level === Logger.INFO && console.debug) {
+                hdlr = console.debug;
+            }
 
 			// Support for IE8+ (and other, slightly more sane environments)
 			Function.prototype.apply.call(hdlr, console, messages);
