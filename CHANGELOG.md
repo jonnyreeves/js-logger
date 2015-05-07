@@ -1,3 +1,7 @@
+## 1.0.0 (18th April, 2015)
+	- Introduce timing operations (#time and #timeEnd)
+	- Update gulp dependencies.
+
 ## 0.9.14 (4th September, 2014)
 	- Fix for IE7 (#10, @james-west)
 

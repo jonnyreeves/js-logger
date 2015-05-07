@@ -1,6 +1,5 @@
 var packageJSON = require('./package.json');
 var gulp = require('gulp');
-var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
@@ -28,7 +27,7 @@ gulp.task('bower_version', function () {
 gulp.task('version', [ 'src_version', 'bower_version' ]);
 
 gulp.task('lint', [ 'version' ], function () {
-	return gulp.src(srcFile)
+	return gulp.src([ srcFile, 'test-src/*.js' ])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
 		.pipe(jshint.reporter('fail'));
@@ -52,9 +51,9 @@ gulp.task('release', [ 'push_tag', 'publish_npm' ]);
 
 gulp.task('push_tag', function (done) {
 	git.tag(version, 'v' + version);
-
-	spawn('git', [ 'push', '--tags' ], { stdio: 'inherit' })
-		.on('close', done);
+	git.push('origin', 'master', {args: " --tags"}, function (err) {
+		done(err);
+	});
 });
 
 gulp.task('publish_npm', function (done) {

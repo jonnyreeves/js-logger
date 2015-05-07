@@ -3,9 +3,6 @@
  * Jonny Reeves, http://jonnyreeves.co.uk/
  * js-logger may be freely distributed under the MIT license. 
  */
-
-/*jshint sub:true*/
-/*global console:true,define:true, module:true*/
 (function (global) {
 	"use strict";
 
@@ -13,14 +10,14 @@
 	var Logger = { };
 	
 	// For those that are at home that are keeping score.
-	Logger.VERSION = "0.9.14";
+	Logger.VERSION = "1.0.0";
 	
 	// Function which handles all incoming log messages.
 	var logHandler;
 	
 	// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
 	var contextualLoggersByNameMap = {};
-	
+
 	// Polyfill for ES5's Function.bind.
 	var bind = function(scope, func) {
 		return function() {
@@ -49,6 +46,7 @@
 	// Predefined logging levels.
 	Logger.DEBUG = defineLogLevel(1, 'DEBUG');
 	Logger.INFO = defineLogLevel(2, 'INFO');
+	Logger.TIME = defineLogLevel(3, 'TIME');
 	Logger.WARN = defineLogLevel(4, 'WARN');
 	Logger.ERROR = defineLogLevel(8, 'ERROR');
 	Logger.OFF = defineLogLevel(99, 'OFF');
@@ -92,6 +90,18 @@
 			this.invoke(Logger.ERROR, arguments);
 		},
 
+		time: function (label) {
+			if (typeof label === 'string' && label.length > 0) {
+				this.invoke(Logger.TIME, [ label, 'start' ]);
+			}
+		},
+
+		timeEnd: function (label) {
+			if (typeof label === 'string' && label.length > 0) {
+				this.invoke(Logger.TIME, [ label, 'end' ]);
+			}
+		},
+
 		// Invokes the logger callback if it's not being filtered.
 		invoke: function (level, msgArgs) {
 			if (logHandler && this.enabledFor(level)) {
@@ -110,6 +120,8 @@
 
 		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
 		L.debug = bind(globalLogger, globalLogger.debug);
+		L.time = bind(globalLogger, globalLogger.time);
+		L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
 		L.info = bind(globalLogger, globalLogger.info);
 		L.warn = bind(globalLogger, globalLogger.warn);
 		L.error = bind(globalLogger, globalLogger.error);
@@ -154,6 +166,15 @@
 			return;
 		}
 
+		// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
+		// that don't offer a native console method.
+		var timerStartTimeByLabelMap = {};
+
+		// Support for IE8+ (and other, slightly more sane environments)
+		var invokeConsoleMethod = function (hdlr, messages) {
+			Function.prototype.apply.call(hdlr, console, messages);
+		};
+
 		Logger.setLevel(defaultLevel || Logger.DEBUG);
 		Logger.setHandler(function(messages, context) {
 			var hdlr = console.log;
@@ -163,17 +184,37 @@
 				messages[0] = "[" + context.name + "] " + messages[0];
 			}
 
-			// Delegate through to custom warn/error loggers if present on the console.
-			if (context.level === Logger.WARN && console.warn) {
-				hdlr = console.warn;
-			} else if (context.level === Logger.ERROR && console.error) {
-				hdlr = console.error;
-			} else if (context.level === Logger.INFO && console.info) {
-				hdlr = console.info;
+			if (context.level === Logger.TIME) {
+				if (messages[1] === 'start') {
+					if (console.time) {
+						console.time(messages[0]);
+					}
+					else {
+						timerStartTimeByLabelMap[messages[0]] = new Date().getTime();
+					}
+				}
+				else {
+					if (console.timeEnd) {
+						console.timeEnd(messages[0]);
+					}
+					else {
+						invokeConsoleMethod(hdlr, [ messages[0] + ': ' +
+							(new Date().getTime() - timerStartTimeByLabelMap[messages[0]]) + 'ms' ]);
+					}
+				}
 			}
+			else {
+				// Delegate through to custom warn/error loggers if present on the console.
+				if (context.level === Logger.WARN && console.warn) {
+					hdlr = console.warn;
+				} else if (context.level === Logger.ERROR && console.error) {
+					hdlr = console.error;
+				} else if (context.level === Logger.INFO && console.info) {
+					hdlr = console.info;
+				}
 
-			// Support for IE8+ (and other, slightly more sane environments)
-			Function.prototype.apply.call(hdlr, console, messages);
+				invokeConsoleMethod(hdlr, messages);
+			}
 		});
 	};
 
@@ -193,5 +234,5 @@
 		};
 
 		global.Logger = Logger;
-    }
+	}
 }(this));

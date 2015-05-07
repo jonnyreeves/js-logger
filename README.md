@@ -54,13 +54,26 @@ Okay, let's get serious, logging is not for kids, it's for adults with serious s
 	
 	// As it's the same instance being returned each time, you don't have to store a reference:
 	Logger.get('ModuleA').warn('FizzWozz combombulated!");
-    
+
 Note that `Logger.setLevel()` will also change the current log filter level for all named logger instances; so typically you would configure your logger levels like so:
 
-    // Create a couple of named loggers (typically in their own AMD file)
-    var loggerA = Logger.get('LoggerA');
-    var loggerB = Logger.get('LoggerB');
-    
-    // Configure log levels.
-    Logger.setLevel(Logger.WARN);  // Global logging level.
-    Logger.get('LoggerB').setLevel(Logger.DEBUG);  // Enable debug logging for LoggerB
+	// Create a couple of named loggers (typically in their own module)
+	var loggerA = Logger.get('LoggerA');
+	var loggerB = Logger.get('LoggerB');
+
+	// Configure log levels.
+	Logger.setLevel(Logger.WARN);  // Global logging level.
+	Logger.get('LoggerB').setLevel(Logger.DEBUG);  // Enable debug logging for LoggerB
+
+## Profiling
+Sometimes its good to know what's taking so damn long; you can use `Logger.time()` and `Logger.timeEnd()` to keep tabs on things, the default log handler implementation delegates to the equivalent console methods if they exist, or write to `console.log` if they don't.
+
+	// Start timing something
+	Logger.time('self destruct sequence');
+
+	// ... Some time passes ...
+
+	// Stop timing something.
+	Logger.timeEnd('self destruct sequence'); // logs: 'self destruct sequence: 1022ms'.
+
+Note that `time` and `timeEnd` methods are also provided to named Logger instances.
