@@ -178,30 +178,26 @@
 		Logger.setLevel(defaultLevel || Logger.DEBUG);
 		Logger.setHandler(function(messages, context) {
 			var hdlr = console.log;
-
-			// Prepend the logger's name to the log message for easy identification.
-			if (context.name) {
-				Array.prototype.unshift.call(messages, "[" + context.name + "] ");
-			}
+			var timerLabel;
 
 			if (context.level === Logger.TIME) {
-				var positionLabel = messages.length-1;
-      	var userLabel = context.name ? 1 : 0;
-				if (messages[positionLabel] === 'start') {
+				timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
+
+				if (messages[1] === 'start') {
 					if (console.time) {
-						console.time(messages[userLabel]);
+						console.time(timerLabel);
 					}
 					else {
-						timerStartTimeByLabelMap[messages[userLabel]] = new Date().getTime();
+						timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
 					}
 				}
 				else {
 					if (console.timeEnd) {
-						console.timeEnd(messages[userLabel]);
+						console.timeEnd(timerLabel);
 					}
 					else {
-						invokeConsoleMethod(hdlr, [ messages[userLabel] + ': ' +
-							(new Date().getTime() - timerStartTimeByLabelMap[messages[userLabel]]) + 'ms' ]);
+						invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
+							(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
 					}
 				}
 			}
@@ -213,6 +209,11 @@
 					hdlr = console.error;
 				} else if (context.level === Logger.INFO && console.info) {
 					hdlr = console.info;
+				}
+
+				// Prepend the logger's name to the log message for easy identification.
+				if (context.name) {
+					Array.prototype.unshift.call(messages, "[" + context.name + "] ");
 				}
 
 				invokeConsoleMethod(hdlr, messages);
