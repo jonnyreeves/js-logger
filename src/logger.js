@@ -178,28 +178,26 @@
 		Logger.setLevel(defaultLevel || Logger.DEBUG);
 		Logger.setHandler(function(messages, context) {
 			var hdlr = console.log;
-
-			// Prepend the logger's name to the log message for easy identification.
-			if (context.name) {
-				messages[0] = "[" + context.name + "] " + messages[0];
-			}
+			var timerLabel;
 
 			if (context.level === Logger.TIME) {
+				timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
+
 				if (messages[1] === 'start') {
 					if (console.time) {
-						console.time(messages[0]);
+						console.time(timerLabel);
 					}
 					else {
-						timerStartTimeByLabelMap[messages[0]] = new Date().getTime();
+						timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
 					}
 				}
 				else {
 					if (console.timeEnd) {
-						console.timeEnd(messages[0]);
+						console.timeEnd(timerLabel);
 					}
 					else {
-						invokeConsoleMethod(hdlr, [ messages[0] + ': ' +
-							(new Date().getTime() - timerStartTimeByLabelMap[messages[0]]) + 'ms' ]);
+						invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
+							(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
 					}
 				}
 			}
@@ -211,6 +209,11 @@
 					hdlr = console.error;
 				} else if (context.level === Logger.INFO && console.info) {
 					hdlr = console.info;
+				}
+
+				// Prepend the logger's name to the log message for easy identification.
+				if (context.name) {
+					Array.prototype.unshift.call(messages, "[" + context.name + "] ");
 				}
 
 				invokeConsoleMethod(hdlr, messages);
