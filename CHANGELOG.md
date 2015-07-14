@@ -1,3 +1,6 @@
+## 1.1.0 (14th July, 2015)
+	- Prevent stringification of objects (#17, @paulinthought)
+
 ## 1.0.0 (18th April, 2015)
 	- Introduce timing operations (#time and #timeEnd)
 	- Update gulp dependencies.
