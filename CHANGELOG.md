@@ -1,3 +1,6 @@
+## 1.1.1 (14th July, 2015)
+	- Fixed botched npm release of 1.1.0 :)
+
 ## 1.1.0 (14th July, 2015)
 	- Prevent stringification of objects (#17, @paulinthought)
 
