@@ -185,21 +185,23 @@
 			}
 
 			if (context.level === Logger.TIME) {
-				if (messages[1] === 'start') {
+				var positionLabel = messages.length-1;
+      	var userLabel = context.name ? 1 : 0;
+				if (messages[positionLabel] === 'start') {
 					if (console.time) {
-						console.time(messages[0]);
+						console.time(messages[userLabel]);
 					}
 					else {
-						timerStartTimeByLabelMap[messages[0]] = new Date().getTime();
+						timerStartTimeByLabelMap[messages[userLabel]] = new Date().getTime();
 					}
 				}
 				else {
 					if (console.timeEnd) {
-						console.timeEnd(messages[0]);
+						console.timeEnd(messages[userLabel]);
 					}
 					else {
-						invokeConsoleMethod(hdlr, [ messages[0] + ': ' +
-							(new Date().getTime() - timerStartTimeByLabelMap[messages[0]]) + 'ms' ]);
+						invokeConsoleMethod(hdlr, [ messages[userLabel] + ': ' +
+							(new Date().getTime() - timerStartTimeByLabelMap[messages[userLabel]]) + 'ms' ]);
 					}
 				}
 			}
