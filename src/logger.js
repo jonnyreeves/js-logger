@@ -181,7 +181,7 @@
 
 			// Prepend the logger's name to the log message for easy identification.
 			if (context.name) {
-				messages[0] = "[" + context.name + "] " + messages[0];
+				Array.prototype.unshift.call(messages, "[" + context.name + "] ");
 			}
 
 			if (context.level === Logger.TIME) {
