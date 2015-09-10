@@ -10,7 +10,7 @@ js-Logger has zero dependencies and comes with AMD and CommonJS module boilerpla
 	<script src="https://raw.github.com/jonnyreeves/js-logger/master/src/logger.min.js"></script>
 
 ## Usage
-Nothing beats the sheer ecstasy of logging!  js-Logger does its best to not be awkward and get in the way.  If you're the sort of person who just wants to get down and dirty then all you need is one line of code: 
+Nothing beats the sheer ecstasy of logging!  js-Logger does its best to not be awkward and get in the way.  If you're the sort of person who just wants to get down and dirty then all you need is one line of code:
 
 	// Log messages will be written to the window's console.
 	Logger.useDefaults();
@@ -28,7 +28,7 @@ Log messages can get a bit annoying; you don't need to tell me, it's all cool.  
 	Logger.setLevel(Logger.WARN);
 	Logger.debug("Donut machine is out of pink ones");  // Not a peep.
 	Logger.warn("Asteroid detected!");  // Logs "Asteroid detected!", best do something about that!
-	
+
 	// Ah, you know what, I'm sick of all these messages.
 	Logger.setLevel(Logger.OFF);
 	Logger.error("Hull breach on decks 5 through to 41!");  // ...
@@ -40,7 +40,19 @@ All log messages are routed through a handler function which redirects filtered 
 		// Send messages to a custom logging endpoint for analysis.
 		// TODO: Add some security? (nah, you worry too much! :P)
 		jQuery.post('/logs', { message: messages[0], level: context.level });
-	}); 
+	});
+
+### Default Log Handler Function
+When you invoke `Logger.useDefaults()`, you can specify a default LogLevel and a custom
+logFormatter function which can alter the messages printed to the console:
+
+	Logger.useDefaults({
+		logLevel: Logger.WARN,
+		formatter: function (messages, context) {
+			messages.unshift('[MyApp]');
+			if (context.name) messages.unshift('[' + context.name + ']');
+		}
+	})
 
 ## Named Loggers
 Okay, let's get serious, logging is not for kids, it's for adults with serious software to write and mission critical log messages to trawl through.  To help you in your goal, js-Logger provides 'named' loggers which can be configured individual with their own contexts.
@@ -48,10 +60,10 @@ Okay, let's get serious, logging is not for kids, it's for adults with serious s
 	// Retrieve a named logger and store it for use.
 	var myLogger = Logger.get('ModuleA');
 	myLogger.info("FizzWozz starting up");
-	
+
 	// This logger instance can be configured independent of all others (including the global one).
 	myLogger.setLevel(Logger.WARN);
-	
+
 	// As it's the same instance being returned each time, you don't have to store a reference:
 	Logger.get('ModuleA').warn('FizzWozz combombulated!");
 
