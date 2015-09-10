@@ -1,3 +1,7 @@
+## 1.2.0 (10 September, 2015)
+  - Support for custom message formatter in Logger.useDefaults()
+	- Logger.useDefaults() now expects a hash instead of a logLevel.
+
 ## 1.1.1 (14th July, 2015)
 	- Fixed botched npm release of 1.1.0 :)
 

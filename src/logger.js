@@ -159,9 +159,17 @@
 			(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
 	};
 
-	// Configure and example a Default implementation which writes to the `window.console` (if present).
+	// Configure and example a Default implementation which writes to the `window.console` (if present).  The
+	// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
 	Logger.useDefaults = function(options) {
 		options = options || {};
+
+		options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
+			// Prepend the logger's name to the log message for easy identification.
+			if (context.name) {
+				messages.unshift("[" + context.name + "]");
+			}
+		};
 
 		// Check for the presence of a logger.
 		if (typeof console === "undefined") {
@@ -179,6 +187,9 @@
 
 		Logger.setLevel(options.defaultLevel || Logger.DEBUG);
 		Logger.setHandler(function(messages, context) {
+			// Convert arguments object to Array.
+			messages = Array.prototype.slice.call(messages);
+
 			var hdlr = console.log;
 			var timerLabel;
 
@@ -213,11 +224,7 @@
 					hdlr = console.info;
 				}
 
-				// Prepend the logger's name to the log message for easy identification.
-				if (context.name) {
-					Array.prototype.unshift.call(messages, "[" + context.name + "] ");
-				}
-
+				options.formatter(messages, context);
 				invokeConsoleMethod(hdlr, messages);
 			}
 		});

@@ -198,4 +198,21 @@
 
 		sandbox.restore();
 	});
+
+	QUnit.test('Logger.useDefaults can be supplied a custom message formatter', function (assert) {
+		var namedLogger = this.logger.get('Dave');
+		var formatterSpy = sinon.spy();
+
+		this.logger.useDefaults({
+			formatter: formatterSpy
+		});
+
+		namedLogger.warn('Hello', 'World');
+
+		assert.equal(formatterSpy.callCount, 1, 'formatter invoked once per log');
+		assert.deepEqual(formatterSpy.firstCall.args[0], [ 'Hello', 'World' ],
+			'Log messages supplied to handler');
+		assert.ok(formatterSpy.firstCall.args[1].name === 'Dave',
+			'Context passed to formatter');
+	});
 }());
