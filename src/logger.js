@@ -1,20 +1,20 @@
 /*!
- * js-logger - http://github.com/jonnyreeves/js-logger 
+ * js-logger - http://github.com/jonnyreeves/js-logger
  * Jonny Reeves, http://jonnyreeves.co.uk/
- * js-logger may be freely distributed under the MIT license. 
+ * js-logger may be freely distributed under the MIT license.
  */
 (function (global) {
 	"use strict";
 
 	// Top level module for the global, static logger instance.
 	var Logger = { };
-	
+
 	// For those that are at home that are keeping score.
-	Logger.VERSION = "1.1.1";
-	
+	Logger.VERSION = "1.2.0";
+
 	// Function which handles all incoming log messages.
 	var logHandler;
-	
+
 	// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
 	var contextualLoggersByNameMap = {};
 
@@ -160,7 +160,9 @@
 	};
 
 	// Configure and example a Default implementation which writes to the `window.console` (if present).
-	Logger.useDefaults = function(defaultLevel) {
+	Logger.useDefaults = function(options) {
+		options = options || {};
+
 		// Check for the presence of a logger.
 		if (typeof console === "undefined") {
 			return;
@@ -175,7 +177,7 @@
 			Function.prototype.apply.call(hdlr, console, messages);
 		};
 
-		Logger.setLevel(defaultLevel || Logger.DEBUG);
+		Logger.setLevel(options.defaultLevel || Logger.DEBUG);
 		Logger.setHandler(function(messages, context) {
 			var hdlr = console.log;
 			var timerLabel;
