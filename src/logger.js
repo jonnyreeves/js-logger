@@ -151,6 +151,58 @@
 		}
 	};
 
+	var defaultHandler = function(messages, context) {
+		// Support for IE8+ (and other, slightly more sane environments)
+		var invokeConsoleMethod = function (hdlr, messages) {
+			Function.prototype.apply.call(hdlr, console, messages);
+		};
+
+		// Convert arguments object to Array.
+		messages = Array.prototype.slice.call(messages);
+
+		var hdlr = console.log;
+		var timerLabel;
+
+		if (context.level === Logger.TIME) {
+			timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
+
+			if (messages[1] === 'start') {
+				if (console.time) {
+					console.time(timerLabel);
+				}
+				else {
+					timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
+				}
+			}
+			else {
+				if (console.timeEnd) {
+					console.timeEnd(timerLabel);
+				}
+				else {
+					invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
+						(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
+				}
+			}
+		}
+		else {
+			// Delegate through to custom warn/error loggers if present on the console.
+			if (context.level === Logger.WARN && console.warn) {
+				hdlr = console.warn;
+			} else if (context.level === Logger.ERROR && console.error) {
+				hdlr = console.error;
+			} else if (context.level === Logger.INFO && console.info) {
+				hdlr = console.info;
+			}
+
+			Logger._options.formatter(messages, context);
+			invokeConsoleMethod(hdlr, messages);
+		}
+	}
+
+	Logger.getDefaultHandler = function() {
+		return defaultHandler;
+	};
+
 	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
 	// default context and log handler.
 	Logger.get = function (name) {
@@ -163,6 +215,7 @@
 	// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
 	Logger.useDefaults = function(options) {
 		options = options || {};
+		Logger._options = options;
 
 		options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
 			// Prepend the logger's name to the log message for easy identification.
@@ -180,54 +233,8 @@
 		// that don't offer a native console method.
 		var timerStartTimeByLabelMap = {};
 
-		// Support for IE8+ (and other, slightly more sane environments)
-		var invokeConsoleMethod = function (hdlr, messages) {
-			Function.prototype.apply.call(hdlr, console, messages);
-		};
-
 		Logger.setLevel(options.defaultLevel || Logger.DEBUG);
-		Logger.setHandler(function(messages, context) {
-			// Convert arguments object to Array.
-			messages = Array.prototype.slice.call(messages);
-
-			var hdlr = console.log;
-			var timerLabel;
-
-			if (context.level === Logger.TIME) {
-				timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
-
-				if (messages[1] === 'start') {
-					if (console.time) {
-						console.time(timerLabel);
-					}
-					else {
-						timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
-					}
-				}
-				else {
-					if (console.timeEnd) {
-						console.timeEnd(timerLabel);
-					}
-					else {
-						invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
-							(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
-					}
-				}
-			}
-			else {
-				// Delegate through to custom warn/error loggers if present on the console.
-				if (context.level === Logger.WARN && console.warn) {
-					hdlr = console.warn;
-				} else if (context.level === Logger.ERROR && console.error) {
-					hdlr = console.error;
-				} else if (context.level === Logger.INFO && console.info) {
-					hdlr = console.info;
-				}
-
-				options.formatter(messages, context);
-				invokeConsoleMethod(hdlr, messages);
-			}
-		});
+		Logger.setHandler(defaultHandler);
 	};
 
 	// Export to popular environments boilerplate.
