@@ -1,22 +1,17 @@
 {
-  "name": "js-logger",
-  "version": "1.2.0",
+  "name": "js-logger-aknudsen",
+  "version": "1.3.0",
   "description": "Lightweight, unobtrusive, configurable JavaScript logger",
-  "author": "Jonny Reeves (http://jonnyreeves.co.uk)",
-  "homepage": "http://github.com/jonnyreeves/js-logger",
+  "author": "Jonny Reeves (http://jonnyreeves.co.uk), Arve Knudsen (http://arveknudsen.com)",
+  "homepage": "http://github.com/aknuds1/js-logger",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jonnyreeves/js-logger.git"
+    "url": "git://github.com/aknuds1/js-logger.git"
   },
   "bugs": {
-    "url": "http://github.com/jonnyreeves/js-logger/issues"
+    "url": "http://github.com/aknuds1/js-logger/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/jonnyreeves/js-logger/blob/master/MIT-LICENSE.txt"
-    }
-  ],
+  "license": "MIT",
   "main": "src/logger.js",
   "scripts": {
     "test": "gulp test lint"

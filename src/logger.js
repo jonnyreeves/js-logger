@@ -10,7 +10,7 @@
 	var Logger = { };
 
 	// For those that are at home that are keeping score.
-	Logger.VERSION = "1.2.0";
+	Logger.VERSION = "1.3.0";
 
 	// Function which handles all incoming log messages.
 	var logHandler;
@@ -162,6 +162,9 @@
 
 		var hdlr = console.log;
 		var timerLabel;
+		// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
+		// that don't offer a native console method.
+		var timerStartTimeByLabelMap = {};
 
 		if (context.level === Logger.TIME) {
 			timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
@@ -197,7 +200,7 @@
 			Logger._options.formatter(messages, context);
 			invokeConsoleMethod(hdlr, messages);
 		}
-	}
+	};
 
 	Logger.getDefaultHandler = function() {
 		return defaultHandler;
@@ -228,10 +231,6 @@
 		if (typeof console === "undefined") {
 			return;
 		}
-
-		// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
-		// that don't offer a native console method.
-		var timerStartTimeByLabelMap = {};
 
 		Logger.setLevel(options.defaultLevel || Logger.DEBUG);
 		Logger.setHandler(defaultHandler);
