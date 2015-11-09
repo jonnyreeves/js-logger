@@ -1,15 +1,15 @@
 {
-  "name": "js-logger-aknudsen",
+  "name": "js-logger",
   "version": "1.3.0",
   "description": "Lightweight, unobtrusive, configurable JavaScript logger",
   "author": "Jonny Reeves (http://jonnyreeves.co.uk), Arve Knudsen (http://arveknudsen.com)",
-  "homepage": "http://github.com/aknuds1/js-logger",
+  "homepage": "http://github.com/jonnyreeves/js-logger",
   "repository": {
     "type": "git",
-    "url": "git://github.com/aknuds1/js-logger.git"
+    "url": "git://github.com/jonnyreeves/js-logger.git"
   },
   "bugs": {
-    "url": "http://github.com/aknuds1/js-logger/issues"
+    "url": "http://github.com/jonnyreeves/js-logger/issues"
   },
   "license": "MIT",
   "main": "src/logger.js",
