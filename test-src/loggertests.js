@@ -215,4 +215,9 @@
 		assert.ok(formatterSpy.firstCall.args[1].name === 'Dave',
 			'Context passed to formatter');
 	});
+
+	QUnit.test('Logger.getDefaultHandler returns default log handler', function (assert) {
+		var defaultHandler = this.logger.getDefaultHandler();
+		assert.equal(typeof defaultHandler, 'function');
+	});
 }());
