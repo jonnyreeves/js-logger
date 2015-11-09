@@ -157,6 +157,9 @@
 			Function.prototype.apply.call(hdlr, console, messages);
 		};
 
+		Logger._options = Logger._options || {};
+		var options = Logger._options;
+
 		// Convert arguments object to Array.
 		messages = Array.prototype.slice.call(messages);
 
@@ -197,7 +200,13 @@
 				hdlr = console.info;
 			}
 
-			Logger._options.formatter(messages, context);
+			options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
+				// Prepend the logger's name to the log message for easy identification.
+				if (context.name) {
+					messages.unshift("[" + context.name + "]");
+				}
+			};
+			options.formatter(messages, context);
 			invokeConsoleMethod(hdlr, messages);
 		}
 	};
@@ -219,13 +228,6 @@
 	Logger.useDefaults = function(options) {
 		options = options || {};
 		Logger._options = options;
-
-		options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
-			// Prepend the logger's name to the log message for easy identification.
-			if (context.name) {
-				messages.unshift("[" + context.name + "]");
-			}
-		};
 
 		// Check for the presence of a logger.
 		if (typeof console === "undefined") {
