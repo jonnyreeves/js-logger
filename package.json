@@ -4,6 +4,7 @@
   "description": "Lightweight, unobtrusive, configurable JavaScript logger",
   "author": "Jonny Reeves (http://jonnyreeves.co.uk)",
   "homepage": "http://github.com/jonnyreeves/js-logger",
+  "typings": "./src/logger.d.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/jonnyreeves/js-logger.git"
