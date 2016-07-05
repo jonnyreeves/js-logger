@@ -159,9 +159,10 @@
 			(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
 	};
 
-	// Configure and example a Default implementation which writes to the `window.console` (if present).  The
-	// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
-	Logger.useDefaults = function(options) {
+	// CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
+	// write to the window's console object (if present); the optional options object can be used to customise the
+	// formatter used to format each log message.
+	Logger.createDefaultHandler = function (options) {
 		options = options || {};
 
 		options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
@@ -170,11 +171,6 @@
 				messages.unshift("[" + context.name + "]");
 			}
 		};
-
-		// Check for the presence of a logger.
-		if (typeof console === "undefined") {
-			return;
-		}
 
 		// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
 		// that don't offer a native console method.
@@ -185,8 +181,12 @@
 			Function.prototype.apply.call(hdlr, console, messages);
 		};
 
-		Logger.setLevel(options.defaultLevel || Logger.DEBUG);
-		Logger.setHandler(function(messages, context) {
+		// Check for the presence of a logger.
+		if (typeof console === "undefined") {
+			return function () { /* no console */ };
+		}
+
+		return function(messages, context) {
 			// Convert arguments object to Array.
 			messages = Array.prototype.slice.call(messages);
 
@@ -227,7 +227,14 @@
 				options.formatter(messages, context);
 				invokeConsoleMethod(hdlr, messages);
 			}
-		});
+		};
+	};
+
+	// Configure and example a Default implementation which writes to the `window.console` (if present).  The
+	// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
+	Logger.useDefaults = function(options) {
+		Logger.setLevel(options && options.defaultLevel || Logger.DEBUG);
+		Logger.setHandler(Logger.createDefaultHandler(options));
 	};
 
 	// Export to popular environments boilerplate.
