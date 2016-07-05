@@ -65,8 +65,7 @@ Logger.createDefaultHandler({
 		// prefix each log message with a timestamp.
 		messages.unshift(new Date().toUTCString())
 	}
-}
-})
+});
 ```
 
 You can use functional composition to extend the default handler with your own custom handler logic:
