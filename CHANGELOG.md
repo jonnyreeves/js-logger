@@ -1,5 +1,10 @@
+## 1.3.0 (5th July, 2016)
+  - Add `Logger.createDefaultHandler()`, fixes #26
+  - Correct typo in README, fixes #28
+  - Adds Typescript definitions (`logger.d.ts`), (#27, @pjsb)
+
 ## 1.2.0 (10 September, 2015)
-  - Support for custom message formatter in Logger.useDefaults()
+	- Support for custom message formatter in Logger.useDefaults()
 	- Logger.useDefaults() now expects a hash instead of a logLevel.
 
 ## 1.1.1 (14th July, 2015)

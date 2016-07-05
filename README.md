@@ -53,15 +53,45 @@ Logger.setHandler(function (messages, context) {
 ```
 
 ### Default Log Handler Function
-When you invoke `Logger.useDefaults()`, you can specify a default LogLevel and a custom
-logFormatter function which can alter the messages printed to the console:
+js-Logger provides a default handler function which writes to your browser's `console` object using the appropriate logging functions based on the message's log level (ie: `Logger.info()` will result in a call to `console.info()`).  The default handler automatically shims for sub-optiomal environments right down to IE7's complete lack of `console` object (it only appears when you open the DevTools - seriosuly, this is one of the anti-user troll things I've seen!)
+
+Use `Logger.createDefaultHandler()` to return a new log handler function which can then be supplied to `Logger.setHandler()`.
+
+You can customise the formatting of each log message by supplying a formatter function to `createDefaultLogHandler`:
+
+```js
+Logger.createDefaultHandler({
+	formatter: function(messages, context) {
+		// prefix each log message with a timestamp.
+		messages.unshift(new Date().toUTCString())
+	}
+}
+})
+```
+
+You can use functional composition to extend the default handler with your own custom handler logic:
+
+```js
+var consoleHandler = Logger.createDefaultHandler();
+var myHandler = function (messages, context) {
+	jQuery.post('/logs', { message: messages[0], level: context.level });
+};
+
+Logger.setHandler(function (messages, context) {
+	consoleHandler(messages, context);
+	myHandler(messages, context);
+});
+
+```
+
+### useDefaults
+`Logger.useDefaults()` is a convenience function which allows you to configure both the default logLevel and handler in one go:
 
 ```js
 Logger.useDefaults({
-	logLevel: Logger.WARN,
+	defaultLevel: Logger.WARN,
 	formatter: function (messages, context) {
-		messages.unshift('[MyApp]');
-		if (context.name) messages.unshift('[' + context.name + ']');
+		messages.unshift(new Date().toUTCString())
 	}
 })
 ```
