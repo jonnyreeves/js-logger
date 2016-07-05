@@ -98,6 +98,7 @@ interface ILogger {
   get(name: string): ILogger;
   time(label: string): void;
   timeEnd(label: string): void;
+  enabledFor(level: ILogLevel): boolean;
 }
 
 declare var Logger: ILogger;
