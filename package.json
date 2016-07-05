@@ -20,7 +20,8 @@
   ],
   "main": "src/logger.js",
   "scripts": {
-    "test": "gulp test lint"
+    "test": "gulp test lint",
+    "build": "gulp default"
   },
   "devDependencies": {
     "gulp": "~3.8.11",
