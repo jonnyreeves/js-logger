@@ -163,7 +163,7 @@
 		var logger = this.logger;
 
 		var sandbox = sinon.sandbox.create();
-		sandbox.stub(console, "log");
+		sandbox.stub(console, "debug");
 		sandbox.stub(console, "info");
 		sandbox.stub(console, "warn");
 		sandbox.stub(console, "error");
@@ -174,7 +174,7 @@
 		logger.warn("warning message");
 		logger.error("error message");
 
-		assert.ok(console.log.calledOnce, "logger.debug calls console.log");
+		assert.ok(console.debug.calledOnce, "logger.debug calls console.debug");
 		assert.ok(console.info.calledOnce, "logger.info calls console.info");
 		assert.ok(console.warn.calledOnce, "logger.warn calls console.warn");
 		assert.ok(console.error.calledOnce, "logger.error calls console.error");
