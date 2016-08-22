@@ -57,7 +57,7 @@ js-Logger provides a default handler function which writes to your browser's `co
 
 Use `Logger.createDefaultHandler()` to return a new log handler function which can then be supplied to `Logger.setHandler()`.
 
-You can customise the formatting of each log message by supplying a formatter function to `createDefaultLogHandler`:
+You can customise the formatting of each log message by supplying a formatter function to `createDefaultHandler`:
 
 ```js
 Logger.createDefaultHandler({
