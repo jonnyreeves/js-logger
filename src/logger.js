@@ -227,7 +227,9 @@
 				}
 
 				options.formatter(messages, context);
-				invokeConsoleMethod(hdlr, messages);
+				var msg = [];
+				msg.push(messages.join(' '));
+				invokeConsoleMethod(hdlr, msg);
 			}
 		};
 	};
