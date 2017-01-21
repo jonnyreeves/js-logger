@@ -11,6 +11,8 @@ js-Logger has zero dependencies and comes with AMD and CommonJS module boilerpla
 <script src="https://raw.github.com/jonnyreeves/js-logger/master/src/logger.min.js"></script>
 ```
 
+Have a look at [babel-plugin-js-logger](https://github.com/core-process/babel-plugin-js-logger), in case your project utilizes [Babel](https://babeljs.io/), and you want to use js-Logger throughout your entire project efficiently.
+
 ## Usage
 Nothing beats the sheer ecstasy of logging!  js-Logger does its best to not be awkward and get in the way.  If you're the sort of person who just wants to get down and dirty then all you need is one line of code:
 
