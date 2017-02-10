@@ -28,6 +28,12 @@ Logger.debug("I'm a debug message!");
 Logger.info("OMG! Check this window out!", window);
 Logger.warn("Purple Alert! Purple Alert!");
 Logger.error("HOLY SHI... no carrier.");
+Logger.group("Start a group");
+Logger.debug("I'm a debug message!");
+Logger.groupEnd("End a group");
+Logger.groupCollapsed("Start a collapsed group");
+Logger.debug("I'm a debug message!");
+Logger.groupEnd("End a group");
 ```
 
 Log messages can get a bit annoying; you don't need to tell me, it's all cool.  If things are getting too noisy for your liking then it's time you read up on the `Logger.setLevel` method:

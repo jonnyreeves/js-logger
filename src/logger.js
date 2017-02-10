@@ -49,6 +49,9 @@
 	Logger.TIME = defineLogLevel(3, 'TIME');
 	Logger.WARN = defineLogLevel(4, 'WARN');
 	Logger.ERROR = defineLogLevel(8, 'ERROR');
+	Logger.GROUP = defineLogLevel(9, 'GROUP');
+	Logger.GROUPEND = defineLogLevel(10, 'GROUPEND');
+	Logger.GROUPCOLLAPSED = defineLogLevel(11, 'GROUPCOLLAPSED');
 	Logger.OFF = defineLogLevel(99, 'OFF');
 
 	// Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
@@ -67,7 +70,11 @@
 				this.context.filterLevel = newLevel;
 			}
 		},
-
+		//return the current context level
+		getLevel: function () {
+			return this.context.filterLevel;
+		},
+		
 		// Is the logger configured to output messages at the supplied level?
 		enabledFor: function (lvl) {
 			var filterLevel = this.context.filterLevel;
@@ -88,6 +95,19 @@
 
 		error: function () {
 			this.invoke(Logger.ERROR, arguments);
+		},
+		
+		
+		group: function () {
+			this.invoke(Logger.GROUP, arguments);
+		},
+
+		groupEnd: function () {
+			this.invoke(Logger.GROUPEND, arguments);
+		},
+
+		groupCollapsed: function () {
+			this.invoke(Logger.GROUPCOLLAPSED, arguments);
 		},
 
 		time: function (label) {
@@ -125,6 +145,9 @@
 		L.info = bind(globalLogger, globalLogger.info);
 		L.warn = bind(globalLogger, globalLogger.warn);
 		L.error = bind(globalLogger, globalLogger.error);
+		L.group = bind(globalLogger, globalLogger.group);
+		L.groupEnd = bind(globalLogger, globalLogger.groupEnd);
+		L.groupCollapsed = bind(globalLogger, globalLogger.groupCollapsed);
 
 		// Don't forget the convenience alias!
 		L.log = L.info;
@@ -149,6 +172,12 @@
 				contextualLoggersByNameMap[key].setLevel(level);
 			}
 		}
+	};
+	
+	// Gets the global logging filter level which applies to *all* previously registered, and future Logger instances.
+	Logger.getLevel = function() {
+		// Get the globalLogger's level.
+		return globalLogger.getLevel();
 	};
 
 	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
@@ -224,6 +253,12 @@
 					hdlr = console.info;
 				} else if (context.level === Logger.DEBUG && console.debug) {
 					hdlr = console.debug;
+				} else if (context.level === Logger.GROUP && console.group) {
+					hdlr = console.group;
+				} else if (context.level === Logger.GROUPEND && console.groupEnd) {
+					hdlr = console.groupEnd;
+				} else if (context.level === Logger.GROUPCOLLAPSED && console.groupCollapsed) {
+					hdlr = console.groupCollapsed;
 				}
 
 				options.formatter(messages, context);

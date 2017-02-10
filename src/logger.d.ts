@@ -57,6 +57,9 @@ interface ILogger {
   TIME: ILogLevel;
   WARN: ILogLevel;
   ERROR: ILogLevel;
+  GROUP: ILogLevel;
+  GROUPEND: ILogLevel;
+  GROUPCOLLAPSED: ILogLevel;
   OFF: ILogLevel;
 
   debug(...x: any[]): void;
@@ -64,6 +67,9 @@ interface ILogger {
   log(...x: any[]): void;
   warn(...x: any[]): void;
   error(...x: any[]): void;
+  group(...x: any[]): void;
+  groupEnd(...x: any[]): void;
+  groupCollapsed(...x: any[]): void;
 
   /**
    * Configure and example a Default implementation which writes to the
@@ -71,7 +77,6 @@ interface ILogger {
    * the default logLevel and provide a custom message formatter.
    */
   useDefaults(options?: ILoggerOpts): void;
-
   /**
    * Sets the global logging filter level which applies to *all* previously
    * registered, and future Logger instances. (note that named loggers (retrieved
@@ -80,6 +85,12 @@ interface ILogger {
    * @param  {ILogLevel} level the level to switch to
    */
   setLevel(level: ILogLevel): void;
+  /**
+   * Gets the global logging filter level which applies to *all* previously
+   * registered, and future Logger instances. 
+   *
+   */
+  getLevel(void): level: ILogLevel;
   /**
    * Set the global logging handler. The supplied function should
    * expect two arguments, the first being an arguments object with the
