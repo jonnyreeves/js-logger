@@ -99,15 +99,15 @@
 		
 		
 		group: function () {
-			this.invoke(Logger.GROUP, arguments)
+			this.invoke(Logger.GROUP, arguments);
 		},
 
 		groupEnd: function () {
-			this.invoke(Logger.GROUPEND, arguments)
+			this.invoke(Logger.GROUPEND, arguments);
 		},
 
 		groupCollapsed: function () {
-			this.invoke(Logger.GROUPCOLLAPSED, arguments)
+			this.invoke(Logger.GROUPCOLLAPSED, arguments);
 		},
 
 		time: function (label) {
