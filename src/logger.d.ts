@@ -81,6 +81,12 @@ interface ILogger {
    */
   setLevel(level: ILogLevel): void;
   /**
+   * Gets the global logging filter level
+   *
+   * @return {ILogLevel} the current logging level
+   */
+  getLevel(void): ILogLevel;
+   /**
    * Set the global logging handler. The supplied function should
    * expect two arguments, the first being an arguments object with the
    * supplied log messages and the second being a context object which

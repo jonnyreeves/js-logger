@@ -67,6 +67,11 @@
 				this.context.filterLevel = newLevel;
 			}
 		},
+		
+		// Gets the current logging level for the logging instance
+		getLevel: function () {
+			return this.context.filterLevel;
+		},
 
 		// Is the logger configured to output messages at the supplied level?
 		enabledFor: function (lvl) {
@@ -149,6 +154,11 @@
 				contextualLoggersByNameMap[key].setLevel(level);
 			}
 		}
+	};
+
+	// Gets the global logging filter level
+	Logger.getLevel = function() {
+		return globalLogger.getLevel();
 	};
 
 	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,

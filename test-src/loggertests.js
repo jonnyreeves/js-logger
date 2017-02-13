@@ -159,6 +159,15 @@
 		assert.ok(this.calls.length === 1, "Logger.setLevel() sets log filter level for all named loggers");
 	});
 
+	QUnit.test("Logger.getLevel - Get the log filter level", function (assert) {
+		var logger = this.logger;
+		logger.setLevel(Logger.DEBUG);
+
+		var level = logger.getLevel();
+
+		assert.strictEqual(level, Logger.DEBUG);
+	});
+
 	QUnit.test("Logger.useDefaults logs to console", function (assert) {
 		var logger = this.logger;
 

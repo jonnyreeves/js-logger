@@ -39,8 +39,15 @@ Logger.debug("Donut machine is out of pink ones");  // Not a peep.
 Logger.warn("Asteroid detected!");  // Logs "Asteroid detected!", best do something about that!
 
 // Ah, you know what, I'm sick of all these messages.
+// But I want to see them again later
+var oldLevel = Logger.getLevel();
 Logger.setLevel(Logger.OFF);
 Logger.error("Hull breach on decks 5 through to 41!");  // ...
+
+// Some time later
+
+Logger.setLevel(oldLevel);
+
 ```
 
 ## Log Handler Functions
