@@ -57,6 +57,9 @@ interface ILogger {
   TIME: ILogLevel;
   WARN: ILogLevel;
   ERROR: ILogLevel;
+  GROUP: ILogLevel;
+  GROUPEND: ILogLevel;
+  GROUPCOLLAPSED: ILogLevel;
   OFF: ILogLevel;
 
   debug(...x: any[]): void;
@@ -64,7 +67,9 @@ interface ILogger {
   log(...x: any[]): void;
   warn(...x: any[]): void;
   error(...x: any[]): void;
-
+  group(...x: any[]): void;
+  groupEnd(...x: any[]): void;
+  groupCollapsed(...x: any[]): void;
   /**
    * Configure and example a Default implementation which writes to the
    * `window.console` (if present). The `options` hash can be used to configure

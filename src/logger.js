@@ -49,6 +49,9 @@
 	Logger.TIME = defineLogLevel(3, 'TIME');
 	Logger.WARN = defineLogLevel(4, 'WARN');
 	Logger.ERROR = defineLogLevel(8, 'ERROR');
+	Logger.GROUP = defineLogLevel(9, 'GROUP');
+	Logger.GROUPEND = defineLogLevel(10, 'GROUPEND');
+	Logger.GROUPCOLLAPSED = defineLogLevel(11, 'GROUPCOLLAPSED');
 	Logger.OFF = defineLogLevel(99, 'OFF');
 
 	// Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
@@ -95,6 +98,18 @@
 			this.invoke(Logger.ERROR, arguments);
 		},
 
+		group: function () {
+			this.invoke(Logger.GROUP, arguments);
+		},
+
+		groupEnd: function () {
+			this.invoke(Logger.GROUPEND, arguments);
+		},
+
+		groupCollapsed: function () {
+			this.invoke(Logger.GROUPCOLLAPSED, arguments);
+		},
+
 		time: function (label) {
 			if (typeof label === 'string' && label.length > 0) {
 				this.invoke(Logger.TIME, [ label, 'start' ]);
@@ -130,6 +145,9 @@
 		L.info = bind(globalLogger, globalLogger.info);
 		L.warn = bind(globalLogger, globalLogger.warn);
 		L.error = bind(globalLogger, globalLogger.error);
+		L.group = bind(globalLogger, globalLogger.group);
+		L.groupEnd = bind(globalLogger, globalLogger.groupEnd);
+		L.groupCollapsed = bind(globalLogger, globalLogger.groupCollapsed);
 
 		// Don't forget the convenience alias!
 		L.log = L.info;
@@ -234,6 +252,12 @@
 					hdlr = console.info;
 				} else if (context.level === Logger.DEBUG && console.debug) {
 					hdlr = console.debug;
+				} else if (context.level === Logger.GROUP && console.group) {
+					hdlr = console.group;
+				} else if (context.level === Logger.GROUPEND && console.groupEnd) {
+					hdlr = console.groupEnd;
+				} else if (context.level === Logger.GROUPCOLLAPSED && console.groupCollapsed) {
+					hdlr = console.groupCollapsed;
 				}
 
 				options.formatter(messages, context);

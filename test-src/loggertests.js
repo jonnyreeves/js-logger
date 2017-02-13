@@ -25,6 +25,9 @@
 		logger.info("An info message");
 		logger.warn("A warning message");
 		logger.error("An error message");
+		logger.group("A group starter");
+		logger.groupCollapsed("A groupCollapsed starter");
+		logger.groupEnd("A group ender");
 
 		// Check they were received.
 		assert.equal(this.calls[0].messages[0], "A debug message");
@@ -38,6 +41,16 @@
 
 		assert.equal(this.calls[3].messages[0], "An error message");
 		assert.strictEqual(this.calls[3].context.level, logger.ERROR);
+
+		assert.equal(this.calls[4].messages[0], "A group starter");
+		assert.strictEqual(this.calls[4].context.level, logger.GROUP);
+
+		assert.equal(this.calls[5].messages[0], "A groupCollapsed starter");
+		assert.strictEqual(this.calls[5].context.level, logger.GROUPCOLLAPSED);
+
+		assert.equal(this.calls[6].messages[0], "A group ender");
+		assert.strictEqual(this.calls[6].context.level, logger.GROUPEND);
+
 	});
 
 	QUnit.test('Golobal Logger - Timing operations routed to logger function', function (assert) {
