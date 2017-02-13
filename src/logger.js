@@ -158,7 +158,7 @@
 
 	// Gets the global logging filter level
 	Logger.getLevel = function() {
-		return global.getLevel();
+		return globalLogger.getLevel();
 	};
 
 	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
