@@ -41,7 +41,7 @@ interface ILoggerOpts extends Object {
    * Defines custom formatter for the log message
    * @param  {formatterCallback} callback the callback which handles the formatting
    */
-  formatter: (messages: any[], context: IContext) => void;
+  formatter?: (messages: any[], context: IContext) => void;
 }
 
 /**
