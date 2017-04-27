@@ -2,7 +2,7 @@
 
 > Lightweight, unobtrusive, configurable JavaScript logger.
 
-[logger.js](https://github.com/jonnyreeves/js-logger/blob/master/src/logger.js) will make you rich, famous and want for almost nothing - oh and it's a flexible abstraction over using `console.log` as well.
+[logger.js](https://github.com/jonnyreeves/js-logger/blob/master/src/logger.js) will make you rich, famous and wanted for almost nothing - oh and it's a flexible abstraction over using `console.log` as well.
 
 ## Installation
 js-Logger has zero dependencies and comes with AMD and CommonJS module boilerplate.  If the last sentence meant nothing to you then just lob the following into your page:
