@@ -105,6 +105,7 @@ interface ILogger {
   time(label: string): void;
   timeEnd(label: string): void;
   enabledFor(level: ILogLevel): boolean;
+  createDefaultHandler(options?: ILoggerOpts): (messages: any[], context: IContext) => void;
 }
 
 declare var Logger: ILogger;
