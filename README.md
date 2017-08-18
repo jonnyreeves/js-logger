@@ -50,7 +50,7 @@ Logger.setLevel(oldLevel);
 ```
 
 ## Log Handler Functions
-All log messages are routed through a handler function which redirects filtered messages somewhere.  You can configure the handler function via `Logger.setHandler` nothing that the supplied function expects two arguments; the first being the log messages to output and the latter being a context object which can be inspected by the log handler.
+All log messages are routed through a handler function which redirects filtered messages somewhere.  You can configure the handler function via `Logger.setHandler` noting that the supplied function expects two arguments; the first being the log messages to output and the latter being a context object which can be inspected by the log handler.
 
 ```js
 Logger.setHandler(function (messages, context) {
