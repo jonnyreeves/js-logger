@@ -1,3 +1,10 @@
+## 1.4.0 (18th August, 2017)
+	- Add `Logger.getLevel()` (#49, @BenjaminVadant)
+	- Invoke `console.debug` if present (#34, @ajwagner777) 
+	- Add Typing for `Logger.createDefaultHandler()` (#55, @scevallos)
+	- Fix typo in README (#43, @gamtiq)
+	- Update README to reference rawgit.com (#33, @tjenkinson)
+
 ## 1.3.0 (5th July, 2016)
 	- Add `Logger.createDefaultHandler()`, fixes #26
 	- Correct typo in README, fixes #28

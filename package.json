@@ -1,6 +1,6 @@
 {
   "name": "js-logger",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Lightweight, unobtrusive, configurable JavaScript logger",
   "author": "Jonny Reeves (http://jonnyreeves.co.uk)",
   "homepage": "http://github.com/jonnyreeves/js-logger",
@@ -29,7 +29,7 @@
     "gulp-uglify": "~1.2.0",
     "gulp-replace": "~0.5.3",
     "gulp-rename": "~1.2.0",
-    "gulp-qunit": "~1.2.1",
+    "gulp-qunit": "~1.5.0",
     "gulp-jshint": "~1.10.0",
     "gulp-size": "~1.2.1",
     "gulp-git": "~1.2.0"

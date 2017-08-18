@@ -209,6 +209,9 @@
 	});
 
 	QUnit.test('Logger.useDefaults can be supplied a custom message formatter', function (assert) {
+		var sandbox = sinon.sandbox.create();
+		sandbox.stub(console, "warn");
+
 		var namedLogger = this.logger.get('Dave');
 		var formatterSpy = sinon.spy();
 
@@ -223,5 +226,7 @@
 			'Log messages supplied to handler');
 		assert.ok(formatterSpy.firstCall.args[1].name === 'Dave',
 			'Context passed to formatter');
+
+		sandbox.restore();
 	});
 }());

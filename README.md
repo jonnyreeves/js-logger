@@ -8,7 +8,7 @@
 js-Logger has zero dependencies and comes with AMD and CommonJS module boilerplate.  If the last sentence meant nothing to you then just lob the following into your page:
 
 ```html
-<script src="https://raw.github.com/jonnyreeves/js-logger/master/src/logger.min.js"></script>
+<script src="https://cdn.rawgit.com/jonnyreeves/js-logger/master/src/logger.min.js"></script>
 ```
 
 Have a look at [babel-plugin-js-logger](https://github.com/core-process/babel-plugin-js-logger), in case your project utilizes [Babel](https://babeljs.io/), and you want to use js-Logger throughout your entire project efficiently.
@@ -44,14 +44,13 @@ var oldLevel = Logger.getLevel();
 Logger.setLevel(Logger.OFF);
 Logger.error("Hull breach on decks 5 through to 41!");  // ...
 
-// Some time later
-
+// Actually, maybe those logs were quite useful...
 Logger.setLevel(oldLevel);
 
 ```
 
 ## Log Handler Functions
-All log messages are routed through a handler function which redirects filtered messages somewhere.  You can configure the handler function via `Logger.setHandler` nothing that the supplied function expects two arguments; the first being the log messages to output and the latter being a context object which can be inspected by the log handler.
+All log messages are routed through a handler function which redirects filtered messages somewhere.  You can configure the handler function via `Logger.setHandler` noting that the supplied function expects two arguments; the first being the log messages to output and the latter being a context object which can be inspected by the log handler.
 
 ```js
 Logger.setHandler(function (messages, context) {
