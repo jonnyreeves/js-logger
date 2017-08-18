@@ -44,8 +44,7 @@ var oldLevel = Logger.getLevel();
 Logger.setLevel(Logger.OFF);
 Logger.error("Hull breach on decks 5 through to 41!");  // ...
 
-// Some time later
-
+// Actually, maybe those logs were quite useful...
 Logger.setLevel(oldLevel);
 
 ```
