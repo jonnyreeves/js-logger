@@ -85,7 +85,7 @@ interface ILogger {
    *
    * @return {ILogLevel} the current logging level
    */
-  getLevel(void): ILogLevel;
+  getLevel(): ILogLevel;
    /**
    * Set the global logging handler. The supplied function should
    * expect two arguments, the first being an arguments object with the
