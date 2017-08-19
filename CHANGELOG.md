@@ -1,3 +1,6 @@
+## 1.4.1 (19th August, 2017)
+	- Fixed `Logger.getLevel()` Typescript definition error (#57, @timaebi)
+
 ## 1.4.0 (18th August, 2017)
 	- Add `Logger.getLevel()` (#49, @BenjaminVadant)
 	- Invoke `console.debug` if present (#34, @ajwagner777) 
