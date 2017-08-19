@@ -8,7 +8,7 @@
 	- Fix typo in README (#43, @gamtiq)
 	- Update README to reference rawgit.com (#33, @tjenkinson)
 
-## 1.3.0 (5th July, 2016)
+## 1.3.0 (5th July, 2016)
 	- Add `Logger.createDefaultHandler()`, fixes #26
 	- Correct typo in README, fixes #28
 	- Adds Typescript definitions (`logger.d.ts`), (#27, @pjsb)
@@ -23,11 +23,11 @@
 ## 1.1.0 (14th July, 2015)
 	- Prevent stringification of objects (#17, @paulinthought)
 
-## 1.0.0 (18th April, 2015)
+## 1.0.0 (18th April, 2015)
 	- Introduce timing operations (#time and #timeEnd)
 	- Update gulp dependencies.
 
-## 0.9.14 (4th September, 2014)
+## 0.9.14 (4th September, 2014)
 	- Fix for IE7 (#10, @james-west)
 
 ## 0.9.12 (13th July, 2014)
