@@ -28,6 +28,8 @@ Logger.debug("I'm a debug message!");
 Logger.info("OMG! Check this window out!", window);
 Logger.warn("Purple Alert! Purple Alert!");
 Logger.error("HOLY SHI... no carrier.");
+Logger.trace("Very verbose message that usually is not needed...");
+Logger.trace("...containing stack trace (if console.trace() method supports it)");
 ```
 
 Log messages can get a bit annoying; you don't need to tell me, it's all cool.  If things are getting too noisy for your liking then it's time you read up on the `Logger.setLevel` method:
@@ -121,13 +123,15 @@ Logger.get('ModuleA').warn('FizzWozz combombulated!');
 Note that `Logger.setLevel()` will also change the current log filter level for all named logger instances; so typically you would configure your logger levels like so:
 
 ```js
-// Create a couple of named loggers (typically in their own module)
+// Create several named loggers (typically in their own module)
 var loggerA = Logger.get('LoggerA');
 var loggerB = Logger.get('LoggerB');
+var loggerC = Logger.get('LoggerC');
 
 // Configure log levels.
 Logger.setLevel(Logger.WARN);  // Global logging level.
 Logger.get('LoggerB').setLevel(Logger.DEBUG);  // Enable debug logging for LoggerB
+Logger.get('LoggerC').setLevel(Logger.TRACE);  // Enable trace logging for LoggerC
 ```
 
 ## Profiling

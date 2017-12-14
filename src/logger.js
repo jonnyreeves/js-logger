@@ -44,10 +44,11 @@
 	};
 
 	// Predefined logging levels.
-	Logger.DEBUG = defineLogLevel(1, 'DEBUG');
-	Logger.INFO = defineLogLevel(2, 'INFO');
-	Logger.TIME = defineLogLevel(3, 'TIME');
-	Logger.WARN = defineLogLevel(4, 'WARN');
+	Logger.TRACE = defineLogLevel(1, 'TRACE');
+	Logger.DEBUG = defineLogLevel(2, 'DEBUG');
+	Logger.INFO = defineLogLevel(3, 'INFO');
+	Logger.TIME = defineLogLevel(4, 'TIME');
+	Logger.WARN = defineLogLevel(5, 'WARN');
 	Logger.ERROR = defineLogLevel(8, 'ERROR');
 	Logger.OFF = defineLogLevel(99, 'OFF');
 
@@ -77,6 +78,10 @@
 		enabledFor: function (lvl) {
 			var filterLevel = this.context.filterLevel;
 			return lvl.value >= filterLevel.value;
+		},
+
+		trace: function () {
+			this.invoke(Logger.TRACE, arguments);
 		},
 
 		debug: function () {
@@ -124,6 +129,7 @@
 		var L = Logger;
 
 		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
+		L.trace = bind(globalLogger, globalLogger.trace);
 		L.debug = bind(globalLogger, globalLogger.debug);
 		L.time = bind(globalLogger, globalLogger.time);
 		L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
@@ -234,6 +240,8 @@
 					hdlr = console.info;
 				} else if (context.level === Logger.DEBUG && console.debug) {
 					hdlr = console.debug;
+				} else if (context.level === Logger.TRACE && console.trace) {
+					hdlr = console.trace;
 				}
 
 				options.formatter(messages, context);

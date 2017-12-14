@@ -18,33 +18,37 @@
 		var logger = this.logger;
 
 		// Enable all log messages.
-		logger.setLevel(logger.DEBUG);
+		logger.setLevel(logger.TRACE);
 
 		// Route some messages through to the logFunc.
+		logger.trace("A trace message");
 		logger.debug("A debug message");
 		logger.info("An info message");
 		logger.warn("A warning message");
 		logger.error("An error message");
 
 		// Check they were received.
-		assert.equal(this.calls[0].messages[0], "A debug message");
-		assert.strictEqual(this.calls[0].context.level, logger.DEBUG);
+		assert.equal(this.calls[0].messages[0], "A trace message");
+		assert.strictEqual(this.calls[0].context.level, logger.TRACE);
 
-		assert.equal(this.calls[1].messages[0], "An info message");
-		assert.strictEqual(this.calls[1].context.level, logger.INFO);
+		assert.equal(this.calls[1].messages[0], "A debug message");
+		assert.strictEqual(this.calls[1].context.level, logger.DEBUG);
 
-		assert.equal(this.calls[2].messages[0], "A warning message");
-		assert.strictEqual(this.calls[2].context.level, logger.WARN);
+		assert.equal(this.calls[2].messages[0], "An info message");
+		assert.strictEqual(this.calls[2].context.level, logger.INFO);
 
-		assert.equal(this.calls[3].messages[0], "An error message");
-		assert.strictEqual(this.calls[3].context.level, logger.ERROR);
+		assert.equal(this.calls[3].messages[0], "A warning message");
+		assert.strictEqual(this.calls[3].context.level, logger.WARN);
+
+		assert.equal(this.calls[4].messages[0], "An error message");
+		assert.strictEqual(this.calls[4].context.level, logger.ERROR);
 	});
 
-	QUnit.test('Golobal Logger - Timing operations routed to logger function', function (assert) {
+	QUnit.test('Global Logger - Timing operations routed to logger function', function (assert) {
 		var logger = this.logger;
 
 		// Enable all log messages.
-		logger.setLevel(logger.DEBUG);
+		logger.setLevel(logger.TRACE);
 
 		logger.time('label');
 		assert.strictEqual(this.calls[0].context.level, logger.TIME);
@@ -61,13 +65,23 @@
 		var logger = this.logger;
 
 		logger.setLevel(logger.OFF);
+		assert.equal(logger.enabledFor(logger.TRACE), false);
 		assert.equal(logger.enabledFor(logger.DEBUG), false);
 		assert.equal(logger.enabledFor(logger.INFO), false);
 		assert.equal(logger.enabledFor(logger.TIME), false);
 		assert.equal(logger.enabledFor(logger.WARN), false);
 		assert.equal(logger.enabledFor(logger.ERROR), false);
 
+		logger.setLevel(logger.TRACE);
+		assert.equal(logger.enabledFor(logger.TRACE), true);
+		assert.equal(logger.enabledFor(logger.DEBUG), true);
+		assert.equal(logger.enabledFor(logger.INFO), true);
+		assert.equal(logger.enabledFor(logger.TIME), true);
+		assert.equal(logger.enabledFor(logger.WARN), true);
+		assert.equal(logger.enabledFor(logger.ERROR), true);
+
 		logger.setLevel(logger.DEBUG);
+		assert.equal(logger.enabledFor(logger.TRACE), false);
 		assert.equal(logger.enabledFor(logger.DEBUG), true);
 		assert.equal(logger.enabledFor(logger.INFO), true);
 		assert.equal(logger.enabledFor(logger.TIME), true);
@@ -75,6 +89,7 @@
 		assert.equal(logger.enabledFor(logger.ERROR), true);
 
 		logger.setLevel(logger.INFO);
+		assert.equal(logger.enabledFor(logger.TRACE), false);
 		assert.equal(logger.enabledFor(logger.DEBUG), false);
 		assert.equal(logger.enabledFor(logger.INFO), true);
 		assert.equal(logger.enabledFor(logger.TIME), true);
@@ -82,6 +97,7 @@
 		assert.equal(logger.enabledFor(logger.ERROR), true);
 
 		logger.setLevel(logger.WARN);
+		assert.equal(logger.enabledFor(logger.TRACE), false);
 		assert.equal(logger.enabledFor(logger.DEBUG), false);
 		assert.equal(logger.enabledFor(logger.INFO), false);
 		assert.equal(logger.enabledFor(logger.TIME), false);
@@ -89,6 +105,7 @@
 		assert.equal(logger.enabledFor(logger.ERROR), true);
 
 		logger.setLevel(logger.ERROR);
+		assert.equal(logger.enabledFor(logger.TRACE), false);
 		assert.equal(logger.enabledFor(logger.DEBUG), false);
 		assert.equal(logger.enabledFor(logger.INFO), false);
 		assert.equal(logger.enabledFor(logger.TIME), false);
@@ -119,7 +136,7 @@
 		this.logger.setLevel(Logger.OFF);
 		named.setLevel(Logger.DEBUG);
 
-		named.debug("Debug message via nemd logger");
+		named.debug("Debug message via named logger");
 		this.logger.debug("Debug message via Global Logger");
 
 		// Check the log message was routed correctly.
@@ -168,21 +185,24 @@
 		assert.strictEqual(level, Logger.DEBUG);
 	});
 
-	QUnit.test("Logger.useDefaults logs to console", function (assert) {
+	QUnit.test("Logger.useDefaults logs to console (except trace)", function (assert) {
 		var logger = this.logger;
 
 		var sandbox = sinon.sandbox.create();
+		sandbox.stub(console, "trace");
 		sandbox.stub(console, "debug");
 		sandbox.stub(console, "info");
 		sandbox.stub(console, "warn");
 		sandbox.stub(console, "error");
 
-		logger.useDefaults();
+		logger.useDefaults(); // default loglevel is debug
+		logger.trace("trace message");
 		logger.debug("debug message");
 		logger.info("info message");
 		logger.warn("warning message");
 		logger.error("error message");
 
+		assert.ok(console.trace.callCount === 0, "logger.trace calls console.trace");
 		assert.ok(console.debug.calledOnce, "logger.debug calls console.debug");
 		assert.ok(console.info.calledOnce, "logger.info calls console.info");
 		assert.ok(console.warn.calledOnce, "logger.warn calls console.warn");
