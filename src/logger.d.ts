@@ -51,7 +51,7 @@ interface ILoggerOpts extends Object {
  * @param  {IContext} context  the current logger context (level and name)
  */
 
-interface ILogger {
+export interface ILogger {
   DEBUG: ILogLevel;
   INFO: ILogLevel;
   TIME: ILogLevel;
