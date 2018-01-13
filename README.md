@@ -61,7 +61,7 @@ Logger.setHandler(function (messages, context) {
 ```
 
 ### Default Log Handler Function
-js-Logger provides a default handler function which writes to your browser's `console` object using the appropriate logging functions based on the message's log level (ie: `Logger.info()` will result in a call to `console.info()`).  The default handler automatically shims for sub-optiomal environments right down to IE7's complete lack of `console` object (it only appears when you open the DevTools - seriosuly, this is one of the anti-user troll things I've seen!)
+js-Logger provides a default handler function which writes to your browser's `console` object using the appropriate logging functions based on the message's log level (ie: `Logger.info()` will result in a call to `console.info()`).  The default handler automatically shims for sub-optiomal environments right down to IE7's complete lack of `console` object (it only appears when you open the DevTools - seriously, this is one of the anti-user troll things I've seen!)
 
 Use `Logger.createDefaultHandler()` to return a new log handler function which can then be supplied to `Logger.setHandler()`.
 
