@@ -1,13 +1,15 @@
 {
     "compilerOptions": {
-        "module": "system",
+        "module": "commonjs",
         "target": "es3",
         "strict": true,
-        "removeComments": true,
+        "removeComments": false,
         "preserveConstEnums": true,
-        "outFile": "./lib/logger.js",
+        // "outFile": "./lib/logger.js",
+        "outDir": "lib",
         "sourceMap": true,
-        "rootDir": "."
+        "declaration": true,
+        "rootDir": "./src"
     },
     "include": [
         "src/**/*"

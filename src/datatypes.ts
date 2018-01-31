@@ -13,7 +13,6 @@ export interface IContext extends Object {
 	/**
 	 * The currrent log level
 	 */
-	// filterLevel: ILogLevel;
 	level: ILogLevel;
 
 	/**
@@ -78,7 +77,7 @@ export interface ILogger {
 	enabledFor(level: ILogLevel): boolean;
 }
 
-export interface IBaseLogger extends ILogger {
+export interface JSLoggerDefaultsType {
   TRACE: ILogLevel;
 	DEBUG: ILogLevel;
 	INFO: ILogLevel;
@@ -112,5 +111,12 @@ export interface IBaseLogger extends ILogger {
 	 */
   get(name: string): ILogger;
 
-	createDefaultHandler(options?: ILoggerOpts): (messages: any[], context: IContext) => void;
+  createDefaultHandler(options?: ILoggerOpts): (messages: any[], context: IContext) => void;
+  
+  // Function which handles all incoming log messages.
+  logHandler: LogHandler | undefined;
+
+  setLevel(level: ILogLevel): void;
 }
+
+export type JSLoggerExportType = JSLoggerDefaultsType & ILogger;
