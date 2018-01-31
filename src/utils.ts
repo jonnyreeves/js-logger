@@ -11,16 +11,3 @@ export const bind = function<T extends Function>(scope: any, func: T): T {
 		return func.apply(scope, arguments);
 	} as any;
 };
-
-// Super exciting object merger-matron 9000 adding another 100 bytes to your download.
-export const merge = function (...p: any[]) {
-	var args = arguments, target = args[0], key, i;
-	for (i = 1; i < args.length; i++) {
-		for (key in args[i]) {
-			if (!(key in target) && args[i].hasOwnProperty(key)) {
-				target[key] = args[i][key];
-			}
-		}
-	}
-	return target;
-};
