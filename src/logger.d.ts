@@ -36,7 +36,8 @@ interface ILoggerOpts extends Object {
   /**
    * The log level, default is DEBUG
    */
-  logLevel?: ILogLevel;
+  defaultLevel?: ILogLevel;
+
   /**
    * Defines custom formatter for the log message
    * @param  {formatterCallback} callback the callback which handles the formatting
