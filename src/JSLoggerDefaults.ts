@@ -1,6 +1,6 @@
 import { JSLoggerDefaultsType, JSLoggerExportType, ILogLevel, ILogger, IContext, LogHandler, ILoggerOpts } from "./datatypes";
 export * from "./datatypes";
-import { bind, defineLogLevel, merge } from "./utils";
+import { bind, defineLogLevel } from "./utils";
 import { ContextualLogger } from "./ContextualLogger";
   
 // Function which handles all incoming log messages.

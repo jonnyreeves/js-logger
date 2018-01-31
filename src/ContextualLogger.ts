@@ -1,6 +1,6 @@
 import { JSLoggerDefaultsType, JSLoggerExportType, ILogLevel, ILogger, IContext, LogHandler, ILoggerOpts } from "./datatypes";
 export * from "./datatypes";
-import { bind, defineLogLevel, merge } from "./utils";
+import { bind, defineLogLevel } from "./utils";
 import { JSLoggerDefaults as Logger } from "./JSLoggerDefaults";
 
 // Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
