@@ -54,7 +54,7 @@ export const JSLoggerDefaults: JSLoggerDefaultsType = {
     get: function (name: string): ILogger {
         // All logger instances are cached so they can be configured ahead of use.
         return contextualLoggersByNameMap[name] ||
-            (contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
+            (contextualLoggersByNameMap[name] = new ContextualLogger({ ...globalLogger.context, name: name }));
     },
     
     // CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
