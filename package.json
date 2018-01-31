@@ -21,9 +21,10 @@
   "main": "src/logger.js",
   "scripts": {
     "test": "gulp test lint",
-    "build": "gulp default"
+    "build": "rimraf lib/* && tsc && browserify lib/logger.js -o lib/logger.bundle.js"
   },
   "devDependencies": {
+    "browserify": "^15.2.0",
     "gulp": "~3.8.11",
     "gulp-git": "~1.2.0",
     "gulp-jshint": "~1.10.0",
@@ -33,6 +34,7 @@
     "gulp-size": "~1.2.1",
     "gulp-uglify": "~1.2.0",
     "gulp-util": "~2.2.14",
+    "rimraf": "^2.6.2",
     "typescript": "^2.6.2"
   }
 }

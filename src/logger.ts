@@ -3,38 +3,27 @@ export * from "./datatypes";
 import { bind, defineLogLevel, merge } from "./utils";
 import { JSLoggerDefaults, globalLogger } from "./JSLoggerDefaults"
 
+const boundGlobalLoggerFunctions: ILogger = {
+	enabledFor: bind(globalLogger, globalLogger.enabledFor),
+	trace: bind(globalLogger, globalLogger.trace),
+	debug: bind(globalLogger, globalLogger.debug),
+	time: bind(globalLogger, globalLogger.time),
+	timeEnd: bind(globalLogger, globalLogger.timeEnd),
+	info: bind(globalLogger, globalLogger.info),
+	warn: bind(globalLogger, globalLogger.warn),
+	error: bind(globalLogger, globalLogger.error),
+	log: bind(globalLogger, globalLogger.info),
+	getLevel: bind(globalLogger, globalLogger.getLevel),
+	setLevel: () => {}, // will be overwritten
+};
 
-
-export const Logger: JSLoggerExportType = (function () {
-	// Copy properties from `JSLoggerDefaults` onto `globalLogger` in order to create the combined export object
-	for (const key in JSLoggerDefaults) {
-		(globalLogger as any)[key] = (JSLoggerDefaults as any)[key];
-	}
-
-	return globalLogger as any;
-})();
-
+export const Logger: JSLoggerExportType = { ...boundGlobalLoggerFunctions, ...JSLoggerDefaults };
 
 // For those that are at home that are keeping score.
 // Logger.VERSION = "1.4.1";
 
-
-// Export to popular environments boilerplate.
-// if (typeof define === 'function' && define.amd) {
-// 	define(Logger);
-// }
-// else if (typeof module !== 'undefined' && module.exports) {
-// 	module.exports = Logger;
-// }
-// else {
-// 	Logger._prevLogger = global.Logger;
-
-// 	Logger.noConflict = function () {
-// 		global.Logger = Logger._prevLogger;
-// 		return Logger;
-// 	};
-
-// 	global.Logger = Logger;
-// }
-
-
+if (typeof window !== 'undefined') {
+	if (!(window as any).Logger) {
+		(window as any).Logger = Logger;
+	}
+}
