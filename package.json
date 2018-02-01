@@ -4,7 +4,6 @@
   "description": "Lightweight, unobtrusive, configurable JavaScript logger",
   "author": "Jonny Reeves (http://jonnyreeves.co.uk)",
   "homepage": "http://github.com/jonnyreeves/js-logger",
-  "typings": "./src/logger.d.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/jonnyreeves/js-logger.git"
@@ -18,7 +17,8 @@
       "url": "http://github.com/jonnyreeves/js-logger/blob/master/MIT-LICENSE.txt"
     }
   ],
-  "main": "src/logger.js",
+  "main": "lib/logger.bundle.js",
+  "typings": "lib/logger.d.ts",
   "scripts": {
     "test": "gulp test lint",
     "build": "rimraf lib/* && tsc && browserify lib/logger.js -o lib/logger.bundle.js"

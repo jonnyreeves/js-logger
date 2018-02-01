@@ -10,7 +10,7 @@ var git = require('gulp-git');
 var spawn = require('child_process').spawn;
  
 var version = packageJSON.version;
-var srcFile = 'src/logger.js';
+var srcFile = 'lib/logger.bundle.js';
 
 gulp.task('src_version', function () {
 	return gulp.src(srcFile)
