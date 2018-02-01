@@ -20,14 +20,14 @@
   "main": "lib/logger.bundle.js",
   "typings": "lib/logger.d.ts",
   "scripts": {
-    "test": "gulp test lint",
+    "test": "gulp test",
+    "lint": "tslint --project .",
     "build": "rimraf lib/* && tsc && browserify lib/logger.js -o lib/logger.bundle.js"
   },
   "devDependencies": {
     "browserify": "^15.2.0",
     "gulp": "~3.8.11",
     "gulp-git": "~1.2.0",
-    "gulp-jshint": "~1.10.0",
     "gulp-qunit": "~1.5.0",
     "gulp-rename": "~1.2.0",
     "gulp-replace": "~0.5.3",
@@ -35,6 +35,7 @@
     "gulp-uglify": "~1.2.0",
     "gulp-util": "~2.2.14",
     "rimraf": "^2.6.2",
+    "tslint": "^5.9.1",
     "typescript": "^2.6.2"
   }
 }

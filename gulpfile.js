@@ -1,21 +1,19 @@
-var packageJSON = require('./package.json');
-var gulp = require('gulp');
-var uglify = require('gulp-uglify');
-var replace = require('gulp-replace');
-var rename = require('gulp-rename');
-var qunit = require('gulp-qunit');
-var jshint = require('gulp-jshint');
-var size = require('gulp-size');
-var git = require('gulp-git');
-var spawn = require('child_process').spawn;
+const packageJSON = require('./package.json');
+const gulp = require('gulp');
+const uglify = require('gulp-uglify');
+const replace = require('gulp-replace');
+const rename = require('gulp-rename');
+const qunit = require('gulp-qunit');
+const size = require('gulp-size');
+const spawn = require('child_process').spawn;
  
-var version = packageJSON.version;
-var srcFile = 'lib/logger.bundle.js';
+const version = packageJSON.version;
+const srcFile = 'lib/logger.bundle.js';
 
 gulp.task('src_version', function () {
 	return gulp.src(srcFile)
 		.pipe(replace(/VERSION = "[^"]+"/, 'VERSION = "' + version + '"'))
-		.pipe(gulp.dest('src'));
+		.pipe(gulp.dest('lib'));
 });
 
 gulp.task('bower_version', function () {
@@ -25,13 +23,6 @@ gulp.task('bower_version', function () {
 });
 
 gulp.task('version', [ 'src_version', 'bower_version' ]);
-
-gulp.task('lint', [ 'version' ], function () {
-	return gulp.src([ srcFile, 'test-src/*.js' ])
-		.pipe(jshint())
-		.pipe(jshint.reporter('default'))
-		.pipe(jshint.reporter('fail'));
-});
 
 gulp.task('test', [ 'version' ], function () {
 	return gulp.src('test-src/index.html')
@@ -44,12 +35,14 @@ gulp.task('minify', [ 'version' ], function () {
 		.pipe(uglify())
 		.pipe(rename('logger.min.js'))
 		.pipe(size({ showFiles: true }))
-		.pipe(gulp.dest('src'));
+		.pipe(gulp.dest('lib'));
 });
 
 gulp.task('release', [ 'push_tag', 'publish_npm' ]);
 
 gulp.task('push_tag', function (done) {
+	const git = require('gulp-git');
+
 	git.tag(version, 'v' + version);
 	git.push('origin', 'master', {args: " --tags"}, function (err) {
 		done(err);
@@ -61,4 +54,4 @@ gulp.task('publish_npm', function (done) {
 		.on('close', done);
 });
 
-gulp.task('default', [ 'version', 'lint', 'test', 'minify' ]);
+gulp.task('default', [ 'version', 'test', 'minify' ]);
