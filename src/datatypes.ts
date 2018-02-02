@@ -119,4 +119,4 @@ export interface IJSLoggerDefaultsType {
   setLevel(level: ILogLevel): void;
 }
 
-export type JSLoggerExportType = IJSLoggerDefaultsType & ILogger;
+export type JSLogger = IJSLoggerDefaultsType & ILogger & { readonly VERSION: string };

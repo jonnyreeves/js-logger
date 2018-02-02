@@ -1,4 +1,4 @@
-import { IContext, IJSLoggerDefaultsType, ILogger, ILoggerOpts, ILogLevel, JSLoggerExportType, LogHandler } from "./datatypes";
+import { IContext, IJSLoggerDefaultsType, ILogger, ILoggerOpts, ILogLevel, JSLogger, LogHandler } from "./datatypes";
 export * from "./datatypes";
 import { ContextualLogger } from "./ContextualLogger";
 import { bind, defineLogLevel } from "./utils";

@@ -1,6 +1,7 @@
 # artefacts
 dist/
 build/
+lib/
 
 # IDE junk
 .settings

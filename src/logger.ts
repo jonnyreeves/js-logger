@@ -1,4 +1,4 @@
-import { IContext, IJSLoggerDefaultsType, ILogger, ILoggerOpts, ILogLevel, JSLoggerExportType, LogHandler } from "./datatypes";
+import { IContext, IJSLoggerDefaultsType, ILogger, ILoggerOpts, ILogLevel, JSLogger, LogHandler } from "./datatypes";
 export * from "./datatypes";
 import { globalLogger, JSLoggerDefaults } from "./JSLoggerDefaults";
 import { bind, defineLogLevel } from "./utils";
@@ -17,10 +17,7 @@ const boundGlobalLoggerFunctions: ILogger = {
   setLevel: () => { /* */ }, // will be overwritten
 };
 
-export const Logger: JSLoggerExportType = { ...boundGlobalLoggerFunctions, ...JSLoggerDefaults };
-
-// For those that are at home that are keeping score.
-// Logger.VERSION = "1.4.1";
+export const Logger: JSLogger = { ...boundGlobalLoggerFunctions, ...JSLoggerDefaults, VERSION: "REPLACED_BEFORE_PUBLISH" };
 
 if (typeof window !== "undefined") {
   if (!(window as any).Logger) {

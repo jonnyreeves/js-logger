@@ -8,11 +8,11 @@ const size = require('gulp-size');
 const spawn = require('child_process').spawn;
  
 const version = packageJSON.version;
-const srcFile = 'lib/logger.bundle.js';
+const loggerEntryPointSrcFile = 'lib/logger.js';
 
 gulp.task('src_version', function () {
-	return gulp.src(srcFile)
-		.pipe(replace(/VERSION = "[^"]+"/, 'VERSION = "' + version + '"'))
+	return gulp.src(loggerEntryPointSrcFile)
+		.pipe(replace(/VERSION: "[^"]+"/, 'VERSION: "' + version + '"'))
 		.pipe(gulp.dest('lib'));
 });
 
@@ -27,15 +27,6 @@ gulp.task('version', [ 'src_version', 'bower_version' ]);
 gulp.task('test', [ 'version' ], function () {
 	return gulp.src('test-src/index.html')
 		.pipe(qunit());
-});
-
-gulp.task('minify', [ 'version' ], function () {
-	return gulp.src(srcFile)
-		.pipe(size({ showFiles: true }))
-		.pipe(uglify())
-		.pipe(rename('logger.min.js'))
-		.pipe(size({ showFiles: true }))
-		.pipe(gulp.dest('lib'));
 });
 
 gulp.task('release', [ 'push_tag', 'publish_npm' ]);

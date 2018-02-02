@@ -22,7 +22,10 @@
   "scripts": {
     "test": "gulp test",
     "lint": "tslint --project .",
-    "build": "rimraf lib/* && tsc && browserify lib/logger.js -o lib/logger.bundle.js"
+    "build": "yarn run build:compile && yarn run build:dist",
+    "build:compile": "rimraf lib/* && tsc",
+    "build:dist":  "browserify lib/logger.js -o lib/logger.bundle.js && uglifyjs lib/logger.bundle.js -o lib/logger.min.js",
+    "prepublishOnly": "yarn run lint && yarn run build:compile && gulp version && yarn run build:dist && yarn run test"
   },
   "devDependencies": {
     "browserify": "^15.2.0",
@@ -36,6 +39,7 @@
     "gulp-util": "~2.2.14",
     "rimraf": "^2.6.2",
     "tslint": "^5.9.1",
-    "typescript": "^2.6.2"
+    "typescript": "^2.6.2",
+    "uglify-js": "3"
   }
 }
