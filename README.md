@@ -8,7 +8,7 @@
 js-Logger has zero dependencies and comes with AMD and CommonJS module boilerplate.  If the last sentence meant nothing to you then just lob the following into your page:
 
 ```html
-<script src="https://cdn.rawgit.com/jonnyreeves/js-logger/master/src/logger.min.js"></script>
+<script src="https://unpkg.com/js-logger@2.0/lib/logger.min.js"></script>
 ```
 
 Have a look at [babel-plugin-js-logger](https://github.com/core-process/babel-plugin-js-logger), in case your project utilizes [Babel](https://babeljs.io/), and you want to use js-Logger throughout your entire project efficiently.
