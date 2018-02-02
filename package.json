@@ -19,6 +19,9 @@
   ],
   "main": "lib/logger.bundle.js",
   "typings": "lib/logger.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "test": "gulp test",
     "lint": "tslint --project .",

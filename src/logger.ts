@@ -18,6 +18,7 @@ const boundGlobalLoggerFunctions: ILogger = {
 };
 
 export const Logger: JSLogger = { ...boundGlobalLoggerFunctions, ...JSLoggerDefaults, VERSION: "REPLACED_BEFORE_PUBLISH" };
+export default Logger;
 
 if (typeof window !== "undefined") {
   if (!(window as any).Logger) {

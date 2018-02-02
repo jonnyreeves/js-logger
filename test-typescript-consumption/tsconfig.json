@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es3",
+        "strict": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "outDir": "lib",
+        "sourceMap": true,
+        "declaration": true,
+        "rootDir": "./src"
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+    ]
+}
