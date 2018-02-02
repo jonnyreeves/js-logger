@@ -5,7 +5,6 @@
         "strict": true,
         "removeComments": false,
         "preserveConstEnums": true,
-        // "outFile": "./lib/logger.js",
         "outDir": "lib",
         "sourceMap": true,
         "declaration": true,
