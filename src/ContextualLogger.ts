@@ -16,9 +16,7 @@ export class ContextualLogger implements ILogger {
   // Changes the current logging level for the logging instance.
   public setLevel(newLevel: ILogLevel) {
     // Ensure the supplied Level object looks valid.
-    if (newLevel && "value" in newLevel) {
-      this.context.level = newLevel;
-    }
+    this.context.level = newLevel;
   }
 
   // Gets the current logging level for the logging instance
