@@ -1,11 +1,11 @@
 {
   "name": "js-logger",
-  "version": "1.4.1",
   "main": "lib/logger.bundle.js",
   "ignore": [
     "**/.*",
     "node_modules",
     "components",
+    "src",
     "test-src"
   ]
 }

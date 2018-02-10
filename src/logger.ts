@@ -17,7 +17,7 @@ const boundGlobalLoggerFunctions: ILogger = {
   setLevel: () => { /* */ }, // will be overwritten
 };
 
-export const Logger: JSLogger = { ...boundGlobalLoggerFunctions, ...JSLoggerDefaults, VERSION: "REPLACED_BEFORE_PUBLISH" };
+export const Logger: JSLogger = { ...boundGlobalLoggerFunctions, ...JSLoggerDefaults, VERSION: "@VERSION@" };
 export default Logger;
 
 if (typeof window !== "undefined") {
