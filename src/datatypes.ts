@@ -1,9 +1,4 @@
-/**
- * @module js-logger
- * @description Typescript description for js-logger
- */
-
-interface ILogLevel extends Object {
+export interface ILogLevel extends Object {
   /**
    * The numerical representation of the level
    */
@@ -14,16 +9,19 @@ interface ILogLevel extends Object {
   name: string;
 }
 
-interface IContext extends Object {
+export interface IContext extends Object {
   /**
    * The currrent log level
    */
   level: ILogLevel;
+
   /**
    * The optional current logger name
    */
   name?: string;
 }
+
+export type LogHandler = (messages: any[], context: IContext) => void;
 
 /**
  * Defines custom formatter for the log message
@@ -31,8 +29,7 @@ interface IContext extends Object {
  * @param  {any[]}    messages the given logger arguments
  * @param  {IContext} context  the current logger context (level and name)
  */
-
-interface ILoggerOpts extends Object {
+export interface ILoggerOpts {
   /**
    * The log level, default is DEBUG
    */
@@ -51,27 +48,13 @@ interface ILoggerOpts extends Object {
  * @param  {any[]}    messages the given logger arguments
  * @param  {IContext} context  the current logger context (level and name)
  */
-
-interface ILogger {
-  DEBUG: ILogLevel;
-  INFO: ILogLevel;
-  TIME: ILogLevel;
-  WARN: ILogLevel;
-  ERROR: ILogLevel;
-  OFF: ILogLevel;
-
+export interface ILogger {
+  trace(...x: any[]): void;
   debug(...x: any[]): void;
   info(...x: any[]): void;
   log(...x: any[]): void;
   warn(...x: any[]): void;
   error(...x: any[]): void;
-
-  /**
-   * Configure and example a Default implementation which writes to the
-   * `window.console` (if present). The `options` hash can be used to configure
-   * the default logLevel and provide a custom message formatter.
-   */
-  useDefaults(options?: ILoggerOpts): void;
 
   /**
    * Sets the global logging filter level which applies to *all* previously
@@ -87,14 +70,41 @@ interface ILogger {
    * @return {ILogLevel} the current logging level
    */
   getLevel(): ILogLevel;
-   /**
+
+  time(label: string): void;
+  timeEnd(label: string): void;
+
+  enabledFor(level: ILogLevel): boolean;
+}
+
+export interface IJSLoggerDefaultsType {
+  TRACE: ILogLevel;
+  DEBUG: ILogLevel;
+  INFO: ILogLevel;
+  TIME: ILogLevel;
+  WARN: ILogLevel;
+  ERROR: ILogLevel;
+  OFF: ILogLevel;
+
+  // Function which handles all incoming log messages.
+  logHandler: LogHandler | undefined;
+
+  /**
+   * Configure and example a Default implementation which writes to the
+   * `window.console` (if present). The `options` hash can be used to configure
+   * the default logLevel and provide a custom message formatter.
+   */
+  useDefaults(options?: ILoggerOpts): void;
+
+  /**
    * Set the global logging handler. The supplied function should
    * expect two arguments, the first being an arguments object with the
    * supplied log messages and the second being a context object which
    * contains a hash of stateful parameters which the logging function can consume.
    * @param  {setHandlerCallback} callback the callback which handles the logging
    */
-  setHandler(logHandler: (messages: any[], context: IContext) => void): void;
+  setHandler(logHandler: LogHandler): void;
+
   /**
    * Retrieve a ContextualLogger instance.  Note that named loggers automatically
    * inherit the global logger's level, default context and log handler.
@@ -103,11 +113,10 @@ interface ILogger {
    * @return {ILogger}      the named logger
    */
   get(name: string): ILogger;
-  time(label: string): void;
-  timeEnd(label: string): void;
-  enabledFor(level: ILogLevel): boolean;
+
   createDefaultHandler(options?: ILoggerOpts): (messages: any[], context: IContext) => void;
+
+  setLevel(level: ILogLevel): void;
 }
 
-declare var Logger: ILogger;
-export = Logger;
+export type JSLogger = IJSLoggerDefaultsType & ILogger & { readonly VERSION: string };

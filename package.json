@@ -4,7 +4,6 @@
   "description": "Lightweight, unobtrusive, configurable JavaScript logger",
   "author": "Jonny Reeves (http://jonnyreeves.co.uk)",
   "homepage": "http://github.com/jonnyreeves/js-logger",
-  "typings": "./src/logger.d.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/jonnyreeves/js-logger.git"
@@ -18,20 +17,32 @@
       "url": "http://github.com/jonnyreeves/js-logger/blob/master/MIT-LICENSE.txt"
     }
   ],
-  "main": "src/logger.js",
+  "main": "lib/logger.bundle.js",
+  "typings": "lib/logger.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
-    "test": "gulp test lint",
-    "build": "gulp default"
+    "test": "gulp test",
+    "lint": "tslint --project .",
+    "build": "yarn run build:compile && yarn run build:dist",
+    "build:compile": "rimraf lib/* && tsc",
+    "build:dist":  "browserify lib/logger.js -o lib/logger.bundle.js && uglifyjs lib/logger.bundle.js -o lib/logger.min.js",
+    "prepublishOnly": "yarn run lint && yarn run build:compile && gulp version && yarn run build:dist && yarn run test"
   },
   "devDependencies": {
+    "browserify": "^15.2.0",
     "gulp": "~3.8.11",
-    "gulp-util": "~2.2.14",
-    "gulp-uglify": "~1.2.0",
-    "gulp-replace": "~0.5.3",
-    "gulp-rename": "~1.2.0",
+    "gulp-git": "~1.2.0",
     "gulp-qunit": "~1.5.0",
-    "gulp-jshint": "~1.10.0",
+    "gulp-rename": "~1.2.0",
+    "gulp-replace": "~0.5.3",
     "gulp-size": "~1.2.1",
-    "gulp-git": "~1.2.0"
+    "gulp-uglify": "~1.2.0",
+    "gulp-util": "~2.2.14",
+    "rimraf": "^2.6.2",
+    "tslint": "^5.9.1",
+    "typescript": "^2.6.2",
+    "uglify-js": "3"
   }
 }

@@ -1,5 +1,9 @@
 language: node_js
 node_js:
-  - "6"
+  - "8"
 before_install: npm install -g gulp
-install: npm install
+install: yarn install
+script:
+    - yarn run build
+    - yarn run test
+    - yarn run lint
