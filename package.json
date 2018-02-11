@@ -31,8 +31,7 @@
     "build:compile": "tsc",
     "build:bundle": "browserify lib/logger.js -o lib/logger.bundle.js",
     "build:minify": "uglifyjs lib/logger.bundle.js -o lib/logger.min.js",
-    "build:version-bundle": "cross-env replace -s @VERSION@ $npm_package_version lib/logger.bundle.js",
-    "prepublishOnly": "yarn run lint && yarn run build:compile && gulp version && yarn run build:dist && yarn run test"
+    "build:version-bundle": "cross-env replace -s @VERSION@ $npm_package_version lib/logger.bundle.js"
   },
   "devDependencies": {
     "browserify": "^15.2.0",
