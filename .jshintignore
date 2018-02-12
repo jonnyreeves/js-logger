@@ -2,3 +2,6 @@
 **/vendor/**
 lib/**
 **/*.min.js
+
+test/nodejs/**/*
+test/typescript/**/*

@@ -17,15 +17,17 @@
       "url": "http://github.com/jonnyreeves/js-logger/blob/master/MIT-LICENSE.txt"
     }
   ],
-  "main": "lib/logger.bundle.js",
+  "main": "lib/logger.js",
   "typings": "lib/logger.d.ts",
   "files": [
     "lib/**/*"
   ],
   "scripts": {
     "clean": "rimraf lib/*",
-    "test": "npm run build && npm run test:browser",
+    "test": "npm run build && npm run test:browser && npm run test:nodejs && npm run test:typescript",
     "test:browser": "node-qunit-phantomjs ./test/browser/index.html",
+    "test:nodejs": "node ./test/nodejs/require.js",
+    "test:typescript": "cd ./test/typescript && tsc",
     "lint": "npm run lint:tslint && npm run lint:jshint",
     "lint:tslint": "tslint --project .",
     "lint:jshint": "jshint .",

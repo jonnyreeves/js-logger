@@ -8,12 +8,13 @@
         "outDir": "lib",
         "sourceMap": true,
         "declaration": true,
-        "rootDir": "./src"
+        "rootDir": "./"
     },
     "include": [
-        "src/**/*"
+        "**/*"
     ],
     "exclude": [
+        "lib",
         "node_modules",
     ]
 }
