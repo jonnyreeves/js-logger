@@ -1,5 +1,4 @@
 import { IContext, IJSLoggerDefaultsType, ILogger, ILoggerOpts, ILogLevel, JSLogger, LogHandler } from "./datatypes";
-export * from "./datatypes";
 import { JSLoggerDefaults as Logger } from "./JSLoggerDefaults";
 import { bind, defineLogLevel } from "./utils";
 
@@ -34,24 +33,24 @@ export class ContextualLogger implements ILogger {
     this.info.apply(this, arguments);
   }
 
-  public trace() {
-    this.invoke(Logger.TRACE, arguments);
+  public trace(...args: any[]) {
+    this.invoke(Logger.TRACE, args);
   }
 
-  public debug() {
-    this.invoke(Logger.DEBUG, arguments);
+  public debug(...args: any[]) {
+    this.invoke(Logger.DEBUG, args);
   }
 
-  public info() {
-    this.invoke(Logger.INFO, arguments);
+  public info(...args: any[]) {
+    this.invoke(Logger.INFO, args);
   }
 
-  public warn() {
-    this.invoke(Logger.WARN, arguments);
+  public warn(...args: any[]) {
+    this.invoke(Logger.WARN, args);
   }
 
-  public error() {
-    this.invoke(Logger.ERROR, arguments);
+  public error(...args: any[]) {
+    this.invoke(Logger.ERROR, args);
   }
 
   public time(label: string) {
@@ -67,7 +66,7 @@ export class ContextualLogger implements ILogger {
   }
 
   // Invokes the logger callback if it's not being filtered.
-  public invoke(level: ILogLevel, msgArgs: any) {
+  public invoke(level: ILogLevel, msgArgs: any[]) {
     if (Logger.logHandler && this.enabledFor(level)) {
       Logger.logHandler(msgArgs, { ...this.context, level });
     }

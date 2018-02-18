@@ -1,0 +1,4 @@
+hello world!
+[myLogger] hello from namedLogger :)
+false
+my_prefix prefixed handler test

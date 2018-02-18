@@ -5,16 +5,15 @@
         "strict": true,
         "removeComments": false,
         "preserveConstEnums": true,
-        "outDir": "lib",
-        "sourceMap": true,
+        "outDir": "build",
         "declaration": true,
-        "rootDir": "./"
+        "rootDir": "src"
     },
     "include": [
-        "**/*"
+        "src/"
     ],
     "exclude": [
-        "lib",
+        "build",
         "node_modules",
     ]
 }

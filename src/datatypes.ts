@@ -114,7 +114,7 @@ export interface IJSLoggerDefaultsType {
    */
   get(name: string): ILogger;
 
-  createDefaultHandler(options?: ILoggerOpts): (messages: any[], context: IContext) => void;
+  createDefaultHandler(options?: ILoggerOpts): LogHandler
 
   setLevel(level: ILogLevel): void;
 }

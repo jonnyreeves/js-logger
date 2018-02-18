@@ -1,0 +1,4 @@
+hello world!
+[myLogger] hello from namedLogger :)
+received message custom handler test
+my_prefix prefixed handler test
