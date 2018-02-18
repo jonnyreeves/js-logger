@@ -16,7 +16,7 @@ const boundGlobalLoggerFunctions: ILogger = {
   setLevel: () => { /* */ }, // will be overwritten
 };
 
-export { ILogger, IContext, LogHandler }
+export { ILogger, IContext, LogHandler };
 export const Logger: JSLogger = { ...boundGlobalLoggerFunctions, ...JSLoggerDefaults, VERSION: "@VERSION@" };
 export default Logger;
 
