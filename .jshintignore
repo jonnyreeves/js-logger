@@ -5,3 +5,4 @@ lib/**
 
 test/nodejs/**/*
 test/typescript/**/*
+test/verify_output.js
