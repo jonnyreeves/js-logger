@@ -2,7 +2,7 @@
 dist/
 build/
 lib/
-test/typescript/lib
+test/typescript/build
 
 # IDE junk
 .settings

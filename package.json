@@ -17,24 +17,24 @@
       "url": "http://github.com/jonnyreeves/js-logger/blob/master/MIT-LICENSE.txt"
     }
   ],
-  "main": "lib/logger.js",
-  "typings": "lib/logger.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "files": [
     "lib/**/*"
   ],
   "scripts": {
-    "clean": "rimraf lib/*",
+    "clean": "rimraf lib/* test/typescript/build/*",
     "test": "npm run build && npm run test:browser && npm run test:nodejs && npm run test:typescript",
     "test:browser": "node-qunit-phantomjs ./test/browser/index.html",
-    "test:nodejs": "node ./test/nodejs/require.js",
-    "test:typescript": "cd ./test/typescript && tsc",
+    "test:nodejs": "node ./test/verify_output.js ./test/nodejs/require.js",
+    "test:typescript": "tsc --project ./test/typescript && node ./test/verify_output.js ./test/typescript/build/import.js",
     "lint": "npm run lint:tslint && npm run lint:jshint",
     "lint:tslint": "tslint --project .",
     "lint:jshint": "jshint .",
     "build": "npm run build:compile && npm run build:bundle && npm run build:version-bundle && npm run build:minify",
     "build:compile": "tsc",
-    "build:bundle": "browserify lib/logger.js -o lib/logger.bundle.js",
-    "build:minify": "uglifyjs lib/logger.bundle.js -o lib/logger.min.js",
+    "build:bundle": "browserify lib/index.js -o lib/logger.bundle.js",
+    "build:minify": "uglifyjs lib/logger.bundle.js -o lib/logger.bundle.min.js",
     "build:version-bundle": "cross-env replace -s @VERSION@ $npm_package_version lib/logger.bundle.js"
   },
   "devDependencies": {
