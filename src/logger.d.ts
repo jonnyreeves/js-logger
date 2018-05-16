@@ -23,6 +23,10 @@ interface IContext extends Object {
    * The optional current logger name
    */
   name?: string;
+    /**
+     * The configured log level
+     */
+  filterLevel?: ILogLevel
 }
 
 /**
