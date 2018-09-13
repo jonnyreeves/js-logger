@@ -2,7 +2,6 @@
  * @module js-logger
  * @description Typescript description for js-logger
  */
-
 interface ILogLevel extends Object {
   /**
    * The numerical representation of the level
@@ -52,7 +51,7 @@ interface ILoggerOpts extends Object {
  * @param  {IContext} context  the current logger context (level and name)
  */
 
-interface ILogger {
+export interface ILogger {
   DEBUG: ILogLevel;
   INFO: ILogLevel;
   TIME: ILogLevel;
