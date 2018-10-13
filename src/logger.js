@@ -10,7 +10,7 @@
 	var Logger = { };
 
 	// For those that are at home that are keeping score.
-	Logger.VERSION = "1.4.1";
+	Logger.VERSION = "1.5.0";
 
 	// Function which handles all incoming log messages.
 	var logHandler;
