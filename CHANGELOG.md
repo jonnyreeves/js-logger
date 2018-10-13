@@ -1,3 +1,8 @@
+## 1.5.0 (13th October, 2017)
+	- Added `Logger.trace()` (#67, @ddanila)
+	- Fix TypeScript definitions for ILoggerOpts (#70, @timm-gs)
+	- Export ILogger interface in TypeScript definitions (#82, @tanneess)
+
 ## 1.4.1 (19th August, 2017)
 	- Fixed `Logger.getLevel()` Typescript definition error (#57, @timaebi)
 
