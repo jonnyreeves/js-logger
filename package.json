@@ -21,7 +21,7 @@
   ],
   "main": "src/logger.js",
   "scripts": {
-    "lint": "jshint --exclude=src/*.min.js src/*.js test/*.js",
+    "lint": "jshint --exclude=src/*.min.js src/*.js test-src/*.js",
     "test": "node-qunit-phantomjs ./test-src/index.html",
     "build": "npm run build:version && npm run build:minify",
     "build:minify": "uglifyjs src/logger.js --mangle --compress -o src/logger.min.js",
