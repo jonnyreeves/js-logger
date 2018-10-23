@@ -1,4 +1,4 @@
-import { ILogger, ILoggerOpts, ILogLevel, IContext } from './types'
+import { GlobalLogger } from './types'
 
-declare var Logger: ILogger;
+declare var Logger: GlobalLogger;
 export = Logger;
