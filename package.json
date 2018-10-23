@@ -21,18 +21,18 @@
   ],
   "main": "src/logger.js",
   "scripts": {
-    "test": "gulp test lint",
-    "build": "gulp default"
+    "lint": "jshint --exclude=src/*.min.js src/*.js test-src/*.js",
+    "test": "node-qunit-phantomjs ./test-src/index.html",
+    "build": "npm run build:version && npm run build:minify",
+    "build:minify": "uglifyjs src/logger.js --mangle --compress -o src/logger.min.js",
+    "build:version": "cross-env replace -s 'VERSION = \"[^\"]+\"' \"VERSION = \\\"$npm_package_version\\\"\" src/logger.js"
   },
   "devDependencies": {
-    "gulp": "~3.8.11",
-    "gulp-util": "~2.2.14",
-    "gulp-uglify": "~1.2.0",
-    "gulp-replace": "~0.5.3",
-    "gulp-rename": "~1.2.0",
-    "gulp-qunit": "~1.5.0",
-    "gulp-jshint": "~1.10.0",
-    "gulp-size": "~1.2.1",
-    "gulp-git": "~1.2.0"
+    "cross-env": "^5.2.0",
+    "jshint": "^2.9.6",
+    "node-qunit-phantomjs": "^2.0.0",
+    "replace": "^1.0.0",
+    "rimraf": "^2.6.2",
+    "uglify-js": "^3.4.9"
   }
 }
