@@ -3,7 +3,7 @@
  * types using the following syntax:
  *
  *	import * as jsLogger from 'js-logger';
- *  import { ILogger } from 'js-logger/src/types';
+ * 	import { ILogger } from 'js-logger/src/types';
  */
 import * as jsLogger from '../../';
 import { ILogger } from '../../src/types'
