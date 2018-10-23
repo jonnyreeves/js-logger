@@ -19,6 +19,12 @@
       "url": "http://github.com/jonnyreeves/js-logger/blob/master/MIT-LICENSE.txt"
     }
   ],
+  "files": [
+    "/src",
+    "CHANGELOG",
+    "MIT-LICENSE.txt",
+    "README"
+  ],
   "main": "src/logger.js",
   "scripts": {
     "lint": "jshint --exclude=src/*.min.js src/*.js test-src/*.js",
