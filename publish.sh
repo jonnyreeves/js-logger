@@ -53,6 +53,15 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
   die "Aborting based on user input"
 fi
 
-#npm run lint
-#npm run test
-#npm run build
+npm run lint
+npm run test
+npm run build
+
+git add .
+git commit -m "Release v${PKG_VERSION}"
+git push origin master
+
+git tag "v${PKG_VERSION}"
+git push origin "refs/tags/v${PKG_VERSION}"
+
+npm publish

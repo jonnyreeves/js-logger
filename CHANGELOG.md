@@ -1,3 +1,8 @@
+## 1.6.0 (23rd October, 2017)
+	- Fix broken TypeScript definitions introduced in 1.5.0, fixes #85
+	- Add `Logger.trace()` method to TypeScript definitions, fixes #86
+	- Export all interfaces in TypeScript definitions
+
 ## 1.5.0 (13th October, 2017)
 	- Added `Logger.trace()` (#67, @ddanila)
 	- Fix TypeScript definitions for ILoggerOpts (#70, @timm-gs)
