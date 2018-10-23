@@ -148,3 +148,6 @@ Logger.timeEnd('self destruct sequence'); // logs: 'self destruct sequence: 1022
 ```
 
 Note that `time` and `timeEnd` methods are also provided to named Logger instances.
+
+## Usage with TypeScript
+TypeScript is great, you should use it. See [the typescript consumer test](blob/master/test-src/typescript-consumer/index.ts) for example usage.
