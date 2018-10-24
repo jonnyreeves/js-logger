@@ -10,4 +10,4 @@ import { ILogger } from '../../src/types'
 
 jsLogger.useDefaults();
 const myLogger: ILogger = jsLogger.get('myLogger');
-jsLogger.info('Yay Typescript!');
+myLogger.info('Yay Typescript!');
