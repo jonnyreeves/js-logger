@@ -3,3 +3,22 @@ install:
 - npm install
 script:
 - "./travis-ci-build.sh"
+before_deploy:
+  PKG_VERSION=$(node -p "require('./package.json').version")
+  NPM_TAG="latest"
+  if [[ ${PKG_VERSION} =~ -next$ ]]; then
+    NPM_TAG="next"
+    SHORT_COMMIT_HASH=$(git rev-parse --short HEAD)
+    UNIQ_PKG_VERSION="${PKG_VERSION}.${SHORT_COMMIT_HASH}"
+    npm --no-git-tag-version version ${UNIQ_PKG_VERSION}
+  fi
+deploy:
+  skip_cleanup: true
+  provider: npm
+  tag: "$NPM_TAG"
+  email:
+    secure: E0W/OPo16kYTP4USEqOyEOgVkXGVYrjyFlJB6n3ZdKbrWJ6+x4d/pHlBnfjr48F9I/A2++LttoclIaB8Jb679M2O++4CWg1kTiNpxeH/89e8ZEzY6eban+z3o+JuHWFZ5cQY5mwV5KIOfF5e1SNM49/9DYVFR0gKkEDmsX48zPE=
+  api_key:
+    secure: 0c81sGUazNzVs+c7JCt5t2JRSk/qOi6cHd75HXU4EVTj39KAMzY2loraqMYDnq9Pz0RNWMDtuCbIgmDWxllkJXp8EuaO6ywrrCBE2ACqio6esZ8CiXrZVey5K1tPgaloqgfcwkJM1R74x3fqv6WKzDf1PdFZV+eXo7/X2OSjpSc=
+  on:
+    branch: master

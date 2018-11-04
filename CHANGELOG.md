@@ -1,3 +1,6 @@
+## 1.7.0-next
+	- Unreleased
+
 ## 1.6.0
 	- Released 23rd October, 2017
 	- Fix broken TypeScript definitions introduced in 1.5.0, fixes #85
