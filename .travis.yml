@@ -3,7 +3,7 @@ install:
 - npm install
 script:
 - "./travis-ci-build.sh"
-before_deploy:
+before_deploy: |
   PKG_VERSION=$(node -p "require('./package.json').version")
   NPM_TAG="latest"
   if [[ ${PKG_VERSION} =~ -next$ ]]; then
