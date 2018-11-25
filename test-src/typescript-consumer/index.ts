@@ -2,11 +2,14 @@
  * Note that as a consumer, you would import jsLogger and its
  * types using the following syntax:
  *
- *	import * as jsLogger from 'js-logger';
- * 	import { ILogger } from 'js-logger/src/types';
+ *  import jsLogger, {
+ *      ILogger
+ *  } from 'js-logger';
+ *
  */
-import * as jsLogger from '../../';
-import { ILogger } from '../../src/types'
+import jsLogger, {
+    ILogger
+ } from '../../';
 
 jsLogger.useDefaults();
 const myLogger: ILogger = jsLogger.get('myLogger');
