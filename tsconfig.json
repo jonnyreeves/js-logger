@@ -1,0 +1,48 @@
+{
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "include": [
+        "src/*",
+        "test-src/typescript-consumer/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "typeAcquisition": {
+        "enable": false
+    },
+     "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "*",
+                "src/*",
+                "test-src/*"
+            ],
+            "js-logger": [
+                "src/logger"
+            ]
+        },
+        "esModuleInterop": true,
+        "diagnostics": true,
+        "sourceMap": true,
+        "alwaysStrict": false,
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "pretty": true,
+        "target": "es5",
+        "module": "commonjs",
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "declaration": false,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "allowSyntheticDefaultImports": true,
+        "traceResolution": true,
+        "lib": [
+            "es5"
+        ]
+    }
+}
