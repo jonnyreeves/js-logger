@@ -105,6 +105,8 @@ Logger.useDefaults({
 })
 ```
 
+You can also use the alias `Logger.setDefaults()`.
+
 ## Named Loggers
 Okay, let's get serious, logging is not for kids, it's for adults with serious software to write and mission critical log messages to trawl through.  To help you in your goal, js-Logger provides 'named' loggers which can be configured individual with their own contexts.
 
