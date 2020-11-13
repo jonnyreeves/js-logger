@@ -1,6 +1,6 @@
 ## 1.6.1
 	- Released 12th November, 2020
-	- Add `setDefaults` alias for `useAlias` (#103, @harrisrobin)
+	- Add `setDefaults` alias for `useDefaults` (#103, @harrisrobin)
 
 ## 1.6.0
 	- Released 23rd October, 2017
