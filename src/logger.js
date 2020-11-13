@@ -257,11 +257,8 @@
 		Logger.setHandler(Logger.createDefaultHandler(options));
 	};
 
-	/**
-	 * Createa an alias to useDefaults to avoid
-	 * breaking a react-hooks rule.
-	 */
-	Logger.setDefaults = Logger.useDefaults
+	// Createa an alias to useDefaults to avoid reaking a react-hooks rule.
+	Logger.setDefaults = Logger.useDefaults;
 
 	// Export to popular environments boilerplate.
 	if (typeof define === 'function' && define.amd) {
