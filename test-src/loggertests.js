@@ -249,4 +249,21 @@
 
 		sandbox.restore();
 	});
+
+	QUnit.test('Logger.setDefaults is an alias for useDefaults', function (assert) {
+		var sandbox = sinon.sandbox.create();
+		sandbox.stub(console, "warn");
+
+		var formatterSpy = sinon.spy();
+
+		this.logger.setDefaults({
+			formatter: formatterSpy
+		});
+
+		this.logger.warn('Hello', 'World');
+
+		assert.ok(formatterSpy.callCount, 'formatter invoked once per log');
+
+		sandbox.restore();
+	});
 }());
