@@ -1,10 +1,5 @@
 {
   "name": "js-logger",
   "main": "src/logger.js",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "components",
-    "test-src"
-  ]
+  "ignore": ["**/.*", "node_modules", "components", "test-src"]
 }

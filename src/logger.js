@@ -4,277 +4,287 @@
  * js-logger may be freely distributed under the MIT license.
  */
 (function (global) {
-	"use strict";
+  "use strict";
 
-	// Top level module for the global, static logger instance.
-	var Logger = { };
+  // Top level module for the global, static logger instance.
+  var Logger = {};
 
-	// For those that are at home that are keeping score.
-	Logger.VERSION = "1.6.1";
+  // For those that are at home that are keeping score.
+  Logger.VERSION = "1.6.1";
 
-	// Function which handles all incoming log messages.
-	var logHandler;
+  // Function which handles all incoming log messages.
+  var logHandler;
 
-	// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
-	var contextualLoggersByNameMap = {};
+  // Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
+  var contextualLoggersByNameMap = {};
 
-	// Polyfill for ES5's Function.bind.
-	var bind = function(scope, func) {
-		return function() {
-			return func.apply(scope, arguments);
-		};
-	};
+  // Polyfill for ES5's Function.bind.
+  var bind = function (scope, func) {
+    return function () {
+      return func.apply(scope, arguments);
+    };
+  };
 
-	// Super exciting object merger-matron 9000 adding another 100 bytes to your download.
-	var merge = function () {
-		var args = arguments, target = args[0], key, i;
-		for (i = 1; i < args.length; i++) {
-			for (key in args[i]) {
-				if (!(key in target) && args[i].hasOwnProperty(key)) {
-					target[key] = args[i][key];
-				}
-			}
-		}
-		return target;
-	};
+  // Super exciting object merger-matron 9000 adding another 100 bytes to your download.
+  var merge = function () {
+    var args = arguments,
+      target = args[0],
+      key,
+      i;
+    for (i = 1; i < args.length; i++) {
+      for (key in args[i]) {
+        if (!(key in target) && args[i].hasOwnProperty(key)) {
+          target[key] = args[i][key];
+        }
+      }
+    }
+    return target;
+  };
 
-	// Helper to define a logging level object; helps with optimisation.
-	var defineLogLevel = function(value, name) {
-		return { value: value, name: name };
-	};
+  // Helper to define a logging level object; helps with optimisation.
+  var defineLogLevel = function (value, name) {
+    return { value: value, name: name };
+  };
 
-	// Predefined logging levels.
-	Logger.TRACE = defineLogLevel(1, 'TRACE');
-	Logger.DEBUG = defineLogLevel(2, 'DEBUG');
-	Logger.INFO = defineLogLevel(3, 'INFO');
-	Logger.TIME = defineLogLevel(4, 'TIME');
-	Logger.WARN = defineLogLevel(5, 'WARN');
-	Logger.ERROR = defineLogLevel(8, 'ERROR');
-	Logger.OFF = defineLogLevel(99, 'OFF');
+  // Predefined logging levels.
+  Logger.TRACE = defineLogLevel(1, "TRACE");
+  Logger.DEBUG = defineLogLevel(2, "DEBUG");
+  Logger.INFO = defineLogLevel(3, "INFO");
+  Logger.TIME = defineLogLevel(4, "TIME");
+  Logger.WARN = defineLogLevel(5, "WARN");
+  Logger.ERROR = defineLogLevel(8, "ERROR");
+  Logger.OFF = defineLogLevel(99, "OFF");
 
-	// Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
-	// of each other.
-	var ContextualLogger = function(defaultContext) {
-		this.context = defaultContext;
-		this.setLevel(defaultContext.filterLevel);
-		this.log = this.info;  // Convenience alias.
-	};
+  // Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
+  // of each other.
+  var ContextualLogger = function (defaultContext) {
+    this.context = defaultContext;
+    this.setLevel(defaultContext.filterLevel);
+    this.log = this.info; // Convenience alias.
+  };
 
-	ContextualLogger.prototype = {
-		// Changes the current logging level for the logging instance.
-		setLevel: function (newLevel) {
-			// Ensure the supplied Level object looks valid.
-			if (newLevel && "value" in newLevel) {
-				this.context.filterLevel = newLevel;
-			}
-		},
-		
-		// Gets the current logging level for the logging instance
-		getLevel: function () {
-			return this.context.filterLevel;
-		},
+  ContextualLogger.prototype = {
+    // Changes the current logging level for the logging instance.
+    setLevel: function (newLevel) {
+      // Ensure the supplied Level object looks valid.
+      if (newLevel && "value" in newLevel) {
+        this.context.filterLevel = newLevel;
+      }
+    },
 
-		// Is the logger configured to output messages at the supplied level?
-		enabledFor: function (lvl) {
-			var filterLevel = this.context.filterLevel;
-			return lvl.value >= filterLevel.value;
-		},
+    // Gets the current logging level for the logging instance
+    getLevel: function () {
+      return this.context.filterLevel;
+    },
 
-		trace: function () {
-			this.invoke(Logger.TRACE, arguments);
-		},
+    // Is the logger configured to output messages at the supplied level?
+    enabledFor: function (lvl) {
+      var filterLevel = this.context.filterLevel;
+      return lvl.value >= filterLevel.value;
+    },
 
-		debug: function () {
-			this.invoke(Logger.DEBUG, arguments);
-		},
+    trace: function () {
+      this.invoke(Logger.TRACE, arguments);
+    },
 
-		info: function () {
-			this.invoke(Logger.INFO, arguments);
-		},
+    debug: function () {
+      this.invoke(Logger.DEBUG, arguments);
+    },
 
-		warn: function () {
-			this.invoke(Logger.WARN, arguments);
-		},
+    info: function () {
+      this.invoke(Logger.INFO, arguments);
+    },
 
-		error: function () {
-			this.invoke(Logger.ERROR, arguments);
-		},
+    warn: function () {
+      this.invoke(Logger.WARN, arguments);
+    },
 
-		time: function (label) {
-			if (typeof label === 'string' && label.length > 0) {
-				this.invoke(Logger.TIME, [ label, 'start' ]);
-			}
-		},
+    error: function () {
+      this.invoke(Logger.ERROR, arguments);
+    },
 
-		timeEnd: function (label) {
-			if (typeof label === 'string' && label.length > 0) {
-				this.invoke(Logger.TIME, [ label, 'end' ]);
-			}
-		},
+    time: function (label) {
+      if (typeof label === "string" && label.length > 0) {
+        this.invoke(Logger.TIME, [label, "start"]);
+      }
+    },
 
-		// Invokes the logger callback if it's not being filtered.
-		invoke: function (level, msgArgs) {
-			if (logHandler && this.enabledFor(level)) {
-				logHandler(msgArgs, merge({ level: level }, this.context));
-			}
-		}
-	};
+    timeEnd: function (label) {
+      if (typeof label === "string" && label.length > 0) {
+        this.invoke(Logger.TIME, [label, "end"]);
+      }
+    },
 
-	// Protected instance which all calls to the to level `Logger` module will be routed through.
-	var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
+    // Invokes the logger callback if it's not being filtered.
+    invoke: function (level, msgArgs) {
+      if (logHandler && this.enabledFor(level)) {
+        logHandler(msgArgs, merge({ level: level }, this.context));
+      }
+    },
+  };
 
-	// Configure the global Logger instance.
-	(function() {
-		// Shortcut for optimisers.
-		var L = Logger;
+  // Protected instance which all calls to the to level `Logger` module will be routed through.
+  var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
 
-		L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
-		L.trace = bind(globalLogger, globalLogger.trace);
-		L.debug = bind(globalLogger, globalLogger.debug);
-		L.time = bind(globalLogger, globalLogger.time);
-		L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
-		L.info = bind(globalLogger, globalLogger.info);
-		L.warn = bind(globalLogger, globalLogger.warn);
-		L.error = bind(globalLogger, globalLogger.error);
+  // Configure the global Logger instance.
+  (function () {
+    // Shortcut for optimisers.
+    var L = Logger;
 
-		// Don't forget the convenience alias!
-		L.log = L.info;
-	}());
+    L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
+    L.trace = bind(globalLogger, globalLogger.trace);
+    L.debug = bind(globalLogger, globalLogger.debug);
+    L.time = bind(globalLogger, globalLogger.time);
+    L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
+    L.info = bind(globalLogger, globalLogger.info);
+    L.warn = bind(globalLogger, globalLogger.warn);
+    L.error = bind(globalLogger, globalLogger.error);
 
-	// Set the global logging handler.  The supplied function should expect two arguments, the first being an arguments
-	// object with the supplied log messages and the second being a context object which contains a hash of stateful
-	// parameters which the logging function can consume.
-	Logger.setHandler = function (func) {
-		logHandler = func;
-	};
+    // Don't forget the convenience alias!
+    L.log = L.info;
+  })();
 
-	// Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
-	// (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
-	Logger.setLevel = function(level) {
-		// Set the globalLogger's level.
-		globalLogger.setLevel(level);
+  // Set the global logging handler.  The supplied function should expect two arguments, the first being an arguments
+  // object with the supplied log messages and the second being a context object which contains a hash of stateful
+  // parameters which the logging function can consume.
+  Logger.setHandler = function (func) {
+    logHandler = func;
+  };
 
-		// Apply this level to all registered contextual loggers.
-		for (var key in contextualLoggersByNameMap) {
-			if (contextualLoggersByNameMap.hasOwnProperty(key)) {
-				contextualLoggersByNameMap[key].setLevel(level);
-			}
-		}
-	};
+  // Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
+  // (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
+  Logger.setLevel = function (level) {
+    // Set the globalLogger's level.
+    globalLogger.setLevel(level);
 
-	// Gets the global logging filter level
-	Logger.getLevel = function() {
-		return globalLogger.getLevel();
-	};
+    // Apply this level to all registered contextual loggers.
+    for (var key in contextualLoggersByNameMap) {
+      if (contextualLoggersByNameMap.hasOwnProperty(key)) {
+        contextualLoggersByNameMap[key].setLevel(level);
+      }
+    }
+  };
 
-	// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
-	// default context and log handler.
-	Logger.get = function (name) {
-		// All logger instances are cached so they can be configured ahead of use.
-		return contextualLoggersByNameMap[name] ||
-			(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
-	};
+  // Gets the global logging filter level
+  Logger.getLevel = function () {
+    return globalLogger.getLevel();
+  };
 
-	// CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
-	// write to the window's console object (if present); the optional options object can be used to customise the
-	// formatter used to format each log message.
-	Logger.createDefaultHandler = function (options) {
-		options = options || {};
+  // Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
+  // default context and log handler.
+  Logger.get = function (name) {
+    // All logger instances are cached so they can be configured ahead of use.
+    return (
+      contextualLoggersByNameMap[name] ||
+      (contextualLoggersByNameMap[name] = new ContextualLogger(
+        merge({ name: name }, globalLogger.context)
+      ))
+    );
+  };
 
-		options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
-			// Prepend the logger's name to the log message for easy identification.
-			if (context.name) {
-				messages.unshift("[" + context.name + "]");
-			}
-		};
+  // CreateDefaultHandler returns a handler function which can be passed to `Logger.setHandler()` which will
+  // write to the window's console object (if present); the optional options object can be used to customise the
+  // formatter used to format each log message.
+  Logger.createDefaultHandler = function (options) {
+    options = options || {};
 
-		// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
-		// that don't offer a native console method.
-		var timerStartTimeByLabelMap = {};
+    options.formatter =
+      options.formatter ||
+      function defaultMessageFormatter(messages, context) {
+        // Prepend the logger's name to the log message for easy identification.
+        if (context.name) {
+          messages.unshift("[" + context.name + "]");
+        }
+      };
 
-		// Support for IE8+ (and other, slightly more sane environments)
-		var invokeConsoleMethod = function (hdlr, messages) {
-			Function.prototype.apply.call(hdlr, console, messages);
-		};
+    // Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
+    // that don't offer a native console method.
+    var timerStartTimeByLabelMap = {};
 
-		// Check for the presence of a logger.
-		if (typeof console === "undefined") {
-			return function () { /* no console */ };
-		}
+    // Support for IE8+ (and other, slightly more sane environments)
+    var invokeConsoleMethod = function (hdlr, messages) {
+      Function.prototype.apply.call(hdlr, console, messages);
+    };
 
-		return function(messages, context) {
-			// Convert arguments object to Array.
-			messages = Array.prototype.slice.call(messages);
+    // Check for the presence of a logger.
+    if (typeof console === "undefined") {
+      return function () {
+        /* no console */
+      };
+    }
 
-			var hdlr = console.log;
-			var timerLabel;
+    return function (messages, context) {
+      // Convert arguments object to Array.
+      messages = Array.prototype.slice.call(messages);
 
-			if (context.level === Logger.TIME) {
-				timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
+      var hdlr = console.log;
+      var timerLabel;
 
-				if (messages[1] === 'start') {
-					if (console.time) {
-						console.time(timerLabel);
-					}
-					else {
-						timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
-					}
-				}
-				else {
-					if (console.timeEnd) {
-						console.timeEnd(timerLabel);
-					}
-					else {
-						invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
-							(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
-					}
-				}
-			}
-			else {
-				// Delegate through to custom warn/error loggers if present on the console.
-				if (context.level === Logger.WARN && console.warn) {
-					hdlr = console.warn;
-				} else if (context.level === Logger.ERROR && console.error) {
-					hdlr = console.error;
-				} else if (context.level === Logger.INFO && console.info) {
-					hdlr = console.info;
-				} else if (context.level === Logger.DEBUG && console.debug) {
-					hdlr = console.debug;
-				} else if (context.level === Logger.TRACE && console.trace) {
-					hdlr = console.trace;
-				}
+      if (context.level === Logger.TIME) {
+        timerLabel =
+          (context.name ? "[" + context.name + "] " : "") + messages[0];
 
-				options.formatter(messages, context);
-				invokeConsoleMethod(hdlr, messages);
-			}
-		};
-	};
+        if (messages[1] === "start") {
+          if (console.time) {
+            console.time(timerLabel);
+          } else {
+            timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
+          }
+        } else {
+          if (console.timeEnd) {
+            console.timeEnd(timerLabel);
+          } else {
+            invokeConsoleMethod(hdlr, [
+              timerLabel +
+                ": " +
+                (new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) +
+                "ms",
+            ]);
+          }
+        }
+      } else {
+        // Delegate through to custom warn/error loggers if present on the console.
+        if (context.level === Logger.WARN && console.warn) {
+          hdlr = console.warn;
+        } else if (context.level === Logger.ERROR && console.error) {
+          hdlr = console.error;
+        } else if (context.level === Logger.INFO && console.info) {
+          hdlr = console.info;
+        } else if (context.level === Logger.DEBUG && console.debug) {
+          hdlr = console.debug;
+        } else if (context.level === Logger.TRACE && console.trace) {
+          hdlr = console.trace;
+        }
 
-	// Configure and example a Default implementation which writes to the `window.console` (if present).  The
-	// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
-	Logger.useDefaults = function(options) {
-		Logger.setLevel(options && options.defaultLevel || Logger.DEBUG);
-		Logger.setHandler(Logger.createDefaultHandler(options));
-	};
+        options.formatter(messages, context);
+        invokeConsoleMethod(hdlr, messages);
+      }
+    };
+  };
 
-	// Createa an alias to useDefaults to avoid reaking a react-hooks rule.
-	Logger.setDefaults = Logger.useDefaults;
+  // Configure and example a Default implementation which writes to the `window.console` (if present).  The
+  // `options` hash can be used to configure the default logLevel and provide a custom message formatter.
+  Logger.useDefaults = function (options) {
+    Logger.setLevel((options && options.defaultLevel) || Logger.DEBUG);
+    Logger.setHandler(Logger.createDefaultHandler(options));
+  };
 
-	// Export to popular environments boilerplate.
-	if (typeof define === 'function' && define.amd) {
-		define(Logger);
-	}
-	else if (typeof module !== 'undefined' && module.exports) {
-		module.exports = Logger;
-	}
-	else {
-		Logger._prevLogger = global.Logger;
+  // Createa an alias to useDefaults to avoid reaking a react-hooks rule.
+  Logger.setDefaults = Logger.useDefaults;
 
-		Logger.noConflict = function () {
-			global.Logger = Logger._prevLogger;
-			return Logger;
-		};
+  // Export to popular environments boilerplate.
+  if (typeof define === "function" && define.amd) {
+    define(Logger);
+  } else if (typeof module !== "undefined" && module.exports) {
+    module.exports = Logger;
+  } else {
+    Logger._prevLogger = global.Logger;
 
-		global.Logger = Logger;
-	}
-}(this));
+    Logger.noConflict = function () {
+      global.Logger = Logger._prevLogger;
+      return Logger;
+    };
+
+    global.Logger = Logger;
+  }
+})(this);

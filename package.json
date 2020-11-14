@@ -28,7 +28,8 @@
   "main": "src/logger.js",
   "scripts": {
     "lint": "jshint --exclude=src/*.min.js src/*.js test-src/*.js",
-    "test": "npm run test:unit && npm run test:tsd",
+    "format": "prettier --write .",
+    "test": "prettier --check . && npm run test:unit && npm run test:tsd",
     "test:unit": "node-qunit-phantomjs ./test-src/index.html",
     "test:tsd": "ts-node -r tsconfig-paths/register test-src/typescript-consumer/index.ts",
     "build": "npm run build:version && npm run build:minify",
@@ -39,6 +40,7 @@
     "cross-env": "^5.2.0",
     "jshint": "^2.9.6",
     "node-qunit-phantomjs": "^2.0.0",
+    "prettier": "2.1.2",
     "replace": "^1.0.0",
     "rimraf": "^2.6.2",
     "ts-node": "^7.0.1",
