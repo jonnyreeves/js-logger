@@ -84,7 +84,7 @@ export interface ILogLevel extends Object {
   name: string;
 }
 
-interface IContext extends Object {
+export interface IContext extends Object {
   /**
    * The currrent log level
    */
@@ -95,7 +95,7 @@ interface IContext extends Object {
   name?: string;
 }
 
-interface CreateDefaultHandlerOptions {
+export interface CreateDefaultHandlerOptions {
   formatter?: ILogHandler;
 }
 
